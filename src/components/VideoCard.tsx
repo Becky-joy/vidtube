@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface VideoCardProps {
@@ -26,10 +27,12 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: 
   };
 
   return (
-    <div 
+    <Link 
+      to={`/video/${id}`}
       className={cn(
-        "video-card animate-fade-in",
-        !isLoaded && "animate-pulse-gentle"
+        "video-card animate-fade-in block",
+        !isLoaded && "animate-pulse-gentle",
+        "hover:transform hover:scale-[1.02] transition-transform duration-200"
       )}
       style={{ animationDelay }}
     >
@@ -37,7 +40,7 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: 
         <img 
           src={thumbnail} 
           alt={title}
-          className="video-thumbnail"
+          className="video-thumbnail w-full rounded-lg"
           onLoad={handleImageLoad}
           loading="lazy"
         />
@@ -62,7 +65,7 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: 
           <p className="text-vidtube-lightgray text-xs">{views} • {uploadTime}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
