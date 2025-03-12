@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Bell, Menu, Search, Upload, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { type SpeechRecognition } from '@/lib/types';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -16,6 +17,24 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
     e.preventDefault();
     console.log('Searching for:', searchQuery);
     // Here you would typically handle the search functionality
+  };
+
+  // Initialize speech recognition
+  const startVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setSearchQuery(transcript);
+        console.log('Voice search:', transcript);
+      };
+      recognition.start();
+    } else {
+      console.log('Speech recognition not supported');
+    }
   };
 
   return (
@@ -45,6 +64,14 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
             placeholder="Search"
             className="w-full bg-vidtube-dark border border-vidtube-gray rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-vidtube-blue"
           />
+          <button 
+            type="button" 
+            onClick={startVoiceSearch} 
+            className="absolute right-12 top-0 h-full px-2 text-vidtube-lightgray hover:text-white"
+            title="Search with voice"
+          >
+            🎤
+          </button>
           <button type="submit" className="absolute right-0 top-0 h-full px-4 rounded-r-full bg-vidtube-gray hover:bg-vidtube-hover">
             <Search className="h-5 w-5" />
           </button>
@@ -58,9 +85,9 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
         <button className="p-2 rounded-full hover:bg-vidtube-hover hidden sm:flex">
           <Bell className="h-5 w-5" />
         </button>
-        <button className="p-2 rounded-full hover:bg-vidtube-hover">
+        <Link to="/profile" className="p-2 rounded-full hover:bg-vidtube-hover">
           <User className="h-5 w-5" />
-        </button>
+        </Link>
       </div>
     </header>
   );
