@@ -1,25 +1,19 @@
 
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
-  message: string;
-}
-
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
-  resultIndex: number;
 }
 
 interface SpeechRecognitionResultList {
-  length: number;
+  readonly length: number;
   item(index: number): SpeechRecognitionResult;
   [index: number]: SpeechRecognitionResult;
 }
 
 interface SpeechRecognitionResult {
-  length: number;
+  readonly length: number;
   item(index: number): SpeechRecognitionAlternative;
   [index: number]: SpeechRecognitionAlternative;
-  isFinal: boolean;
+  isFinal?: boolean;
 }
 
 interface SpeechRecognitionAlternative {
@@ -32,22 +26,20 @@ interface SpeechRecognition extends EventTarget {
   interimResults: boolean;
   lang: string;
   onresult: (event: SpeechRecognitionEvent) => void;
-  onend: (event: Event) => void;
-  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  onend: () => void;
+  onerror: (event: any) => void;
+  abort(): void;
   start(): void;
   stop(): void;
-  abort(): void;
 }
 
 interface SpeechRecognitionConstructor {
-  new(): SpeechRecognition;
+  new (): SpeechRecognition;
 }
 
 declare global {
   interface Window {
-    SpeechRecognition?: SpeechRecognitionConstructor;
-    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+    SpeechRecognition: SpeechRecognitionConstructor;
+    webkitSpeechRecognition: SpeechRecognitionConstructor;
   }
 }
-
-export {};
