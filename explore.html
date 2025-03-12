@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VidTube - Learning Platform</title>
-  <meta name="description" content="VidTube - The best platform for coding tutorials">
+  <title>Explore - VidTube</title>
+  <meta name="description" content="Explore videos on VidTube - The best platform for coding tutorials">
   <meta name="author" content="Lovable">
-  <meta property="og:image" content="/og-image.png">
   <link rel="stylesheet" href="styles.css">
   <link href="https://unpkg.com/lucide-css@0.10.4" rel="stylesheet">
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
@@ -53,11 +52,11 @@
     <aside id="sidebar" class="sidebar">
       <nav>
         <div>
-          <a href="index.html" class="sidebar-item active">
+          <a href="index.html" class="sidebar-item">
             <i data-lucide="home"></i>
             <span>Home</span>
           </a>
-          <a href="explore.html" class="sidebar-item">
+          <a href="explore.html" class="sidebar-item active">
             <i data-lucide="compass"></i>
             <span>Explore</span>
           </a>
@@ -109,7 +108,7 @@
 
     <main class="main-content">
       <section class="video-section">
-        <h1 class="section-title">Recommended</h1>
+        <h1 id="search-title" class="section-title">Explore Videos</h1>
         <div id="video-grid" class="video-grid">
           <!-- Videos will be loaded here via JavaScript -->
           <div class="video-card-skeleton"></div>
@@ -121,6 +120,16 @@
           <div class="video-card-skeleton"></div>
           <div class="video-card-skeleton"></div>
         </div>
+        <div id="no-results" class="no-results-container" style="display: none;">
+          <h2>No results found</h2>
+          <p>We couldn't find any videos matching your search</p>
+          <button class="btn-primary" onclick="window.history.back()">Go Back</button>
+        </div>
+        <div id="error-container" class="error-container" style="display: none;">
+          <h2>Error loading videos</h2>
+          <p>Something went wrong while fetching videos.</p>
+          <button class="btn-primary" onclick="window.location.reload()">Try Again</button>
+        </div>
       </section>
     </main>
   </div>
@@ -129,6 +138,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.268.0/lucide.min.js"></script>
   <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script src="explore.js"></script>
 </body>
 </html>

@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VidTube - Learning Platform</title>
-  <meta name="description" content="VidTube - The best platform for coding tutorials">
+  <title>Video - VidTube</title>
+  <meta name="description" content="Watch videos on VidTube">
   <meta name="author" content="Lovable">
-  <meta property="og:image" content="/og-image.png">
   <link rel="stylesheet" href="styles.css">
   <link href="https://unpkg.com/lucide-css@0.10.4" rel="stylesheet">
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
@@ -53,7 +52,7 @@
     <aside id="sidebar" class="sidebar">
       <nav>
         <div>
-          <a href="index.html" class="sidebar-item active">
+          <a href="index.html" class="sidebar-item">
             <i data-lucide="home"></i>
             <span>Home</span>
           </a>
@@ -107,21 +106,78 @@
       </nav>
     </aside>
 
-    <main class="main-content">
-      <section class="video-section">
-        <h1 class="section-title">Recommended</h1>
-        <div id="video-grid" class="video-grid">
-          <!-- Videos will be loaded here via JavaScript -->
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
+    <main class="main-content video-page">
+      <div class="video-container">
+        <div class="video-player">
+          <div id="youtube-player" class="youtube-embed"></div>
         </div>
-      </section>
+        
+        <div id="video-details" class="video-details">
+          <!-- Video details will be loaded here via JavaScript -->
+          <div class="video-details-skeleton">
+            <div class="skeleton-title"></div>
+            <div class="skeleton-stats"></div>
+            <div class="skeleton-channel">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-channel-info">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-actions">
+          <div id="video-actions-container">
+            <!-- Video actions will be loaded here via JavaScript -->
+          </div>
+        </div>
+        
+        <div class="channel-info" id="channel-info">
+          <!-- Channel info will be loaded here via JavaScript -->
+        </div>
+        
+        <div class="comments-section">
+          <h2 class="comments-title">
+            <i data-lucide="message-square"></i> 
+            <span>Comments</span>
+            <span id="comments-count"></span>
+          </h2>
+          
+          <form id="comment-form" class="comment-form">
+            <div class="comment-form-content">
+              <div class="comment-avatar">
+                <img id="user-avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=Guest" alt="Your avatar">
+              </div>
+              <div class="comment-input-container">
+                <input
+                  type="text"
+                  id="username-input"
+                  placeholder="Your name"
+                  value="Guest User"
+                  class="username-input"
+                >
+                <textarea
+                  id="comment-input"
+                  placeholder="Add a comment..."
+                  class="comment-input"
+                  rows="2"
+                ></textarea>
+                <div class="comment-form-actions">
+                  <button type="submit" class="comment-submit-btn">Comment</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          
+          <div id="comments-container" class="comments-container">
+            <!-- Comments will be loaded here via JavaScript -->
+            <p id="no-comments-message" class="no-comments-message" style="display: none;">
+              No comments yet. Be the first to comment!
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -129,6 +185,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.268.0/lucide.min.js"></script>
   <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script src="video.js"></script>
 </body>
 </html>

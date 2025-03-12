@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VidTube - Learning Platform</title>
-  <meta name="description" content="VidTube - The best platform for coding tutorials">
+  <title>Library - VidTube</title>
+  <meta name="description" content="Your personal library on VidTube">
   <meta name="author" content="Lovable">
-  <meta property="og:image" content="/og-image.png">
   <link rel="stylesheet" href="styles.css">
   <link href="https://unpkg.com/lucide-css@0.10.4" rel="stylesheet">
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
@@ -53,7 +52,7 @@
     <aside id="sidebar" class="sidebar">
       <nav>
         <div>
-          <a href="index.html" class="sidebar-item active">
+          <a href="index.html" class="sidebar-item">
             <i data-lucide="home"></i>
             <span>Home</span>
           </a>
@@ -61,7 +60,7 @@
             <i data-lucide="compass"></i>
             <span>Explore</span>
           </a>
-          <a href="library.html" class="sidebar-item">
+          <a href="library.html" class="sidebar-item active">
             <i data-lucide="library"></i>
             <span>Library</span>
           </a>
@@ -108,18 +107,70 @@
     </aside>
 
     <main class="main-content">
-      <section class="video-section">
-        <h1 class="section-title">Recommended</h1>
-        <div id="video-grid" class="video-grid">
-          <!-- Videos will be loaded here via JavaScript -->
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
-          <div class="video-card-skeleton"></div>
+      <section>
+        <h1 class="section-title">Library</h1>
+        
+        <div class="library-grid">
+          <div class="library-card animate-scale-in" style="animation-delay: 100ms;">
+            <div class="library-card-header">
+              <i data-lucide="history"></i>
+              <h2>History</h2>
+            </div>
+            <p>Browse your watch history</p>
+            <button class="view-all-btn">View all</button>
+          </div>
+          
+          <div class="library-card animate-scale-in" style="animation-delay: 200ms;">
+            <div class="library-card-header">
+              <i data-lucide="clock"></i>
+              <h2>Watch Later</h2>
+            </div>
+            <p>Videos you've saved for later</p>
+            <button class="view-all-btn">View all</button>
+          </div>
+          
+          <div class="library-card animate-scale-in" style="animation-delay: 300ms;">
+            <div class="library-card-header">
+              <i data-lucide="thumbs-up"></i>
+              <h2>Liked Videos</h2>
+            </div>
+            <p>Videos you've liked</p>
+            <button class="view-all-btn">View all</button>
+          </div>
+        </div>
+        
+        <div class="playlists-section">
+          <h2>Playlists</h2>
+          <div class="playlists-grid">
+            <div class="playlist-card animate-scale-in" style="animation-delay: 400ms;">
+              <div class="playlist-thumbnail"></div>
+              <div class="playlist-info">
+                <h3>JavaScript Basics</h3>
+                <p>12 videos</p>
+              </div>
+            </div>
+            <div class="playlist-card animate-scale-in" style="animation-delay: 500ms;">
+              <div class="playlist-thumbnail"></div>
+              <div class="playlist-info">
+                <h3>React Tutorials</h3>
+                <p>18 videos</p>
+              </div>
+            </div>
+            <div class="playlist-card animate-scale-in" style="animation-delay: 600ms;">
+              <div class="playlist-thumbnail"></div>
+              <div class="playlist-info">
+                <h3>CSS Tricks</h3>
+                <p>24 videos</p>
+              </div>
+            </div>
+            <div class="playlist-card animate-scale-in" style="animation-delay: 700ms;">
+              <div class="playlist-thumbnail"></div>
+              <div class="playlist-info">
+                <h3>Python for Beginners</h3>
+                <p>15 videos</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -129,6 +180,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.268.0/lucide.min.js"></script>
   <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script src="library.js"></script>
 </body>
 </html>
