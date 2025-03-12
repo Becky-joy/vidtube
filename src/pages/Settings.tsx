@@ -5,21 +5,36 @@ import { useTheme } from '@/components/ThemeProvider';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sun, Moon, Settings as SettingsIcon, Bell, Shield, User, Eye } from 'lucide-react';
+import { Sun, Moon, Settings as SettingsIcon, Bell, Shield, User, Eye, LogOut } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSaveSettings = () => {
     toast({
       title: "Settings saved",
       description: "Your settings have been saved successfully.",
     });
+  };
+
+  const handleLogout = () => {
+    // In a real app, this would clear auth tokens, user state, etc.
+    localStorage.removeItem('vidtube-user');
+    
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    
+    // Redirect to home page after logout
+    navigate('/');
   };
 
   return (
@@ -127,6 +142,24 @@ const Settings = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Logout Section */}
+        <Card className="bg-vidtube-darkgray p-6 mt-6">
+          <h2 className="text-xl font-medium mb-4 text-destructive flex items-center gap-2">
+            <LogOut className="h-5 w-5" /> Logout
+          </h2>
+          <Separator className="my-4" />
+          <p className="text-vidtube-lightgray mb-4">
+            Logging out will end your current session. You'll need to sign in again to access your account.
+          </p>
+          <Button 
+            variant="destructive" 
+            onClick={handleLogout}
+            className="flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" /> Logout
+          </Button>
+        </Card>
       </div>
     </Layout>
   );
