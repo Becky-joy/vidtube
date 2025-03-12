@@ -35,6 +35,36 @@
 
     --radius: 0.5rem;
   }
+
+  .light-mode {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 96%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 96%;
+    --popover-foreground: 0 0% 7%;
+
+    --primary: 214 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 7%;
+
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 0 0% 88%;
+    --accent-foreground: 0 0% 7%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 82%;
+    --input: 0 0% 82%;
+    --ring: 214 100% 50%;
+  }
 }
 
 @layer base {
@@ -43,21 +73,21 @@
   }
 
   body {
-    @apply bg-vidtube-dark text-vidtube-text;
+    @apply bg-background text-foreground;
   }
 }
 
 @layer components {
   .sidebar-item {
-    @apply flex items-center gap-6 py-2 px-6 text-sm hover:bg-vidtube-hover transition-colors rounded-md;
+    @apply flex items-center gap-6 py-2 px-6 text-sm hover:bg-accent transition-colors rounded-md;
   }
 
   .sidebar-item.active {
-    @apply bg-vidtube-hover;
+    @apply bg-accent;
   }
 
   .video-card {
-    @apply overflow-hidden rounded-lg bg-vidtube-darkgray transition-all duration-300;
+    @apply overflow-hidden rounded-lg bg-card transition-all duration-300;
   }
 
   .video-card:hover {
@@ -65,6 +95,14 @@
   }
 
   .video-thumbnail {
-    @apply w-full aspect-video object-cover bg-vidtube-gray;
+    @apply w-full aspect-video object-cover bg-muted;
+  }
+
+  /* Light mode specific styles */
+  .light-mode {
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      @apply bg-accent text-foreground;
+    }
   }
 }

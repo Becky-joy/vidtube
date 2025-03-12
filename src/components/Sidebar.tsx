@@ -1,5 +1,5 @@
 
-import { Home, Compass, Library, MessageSquare, HelpCircle, BarChart3 } from 'lucide-react';
+import { Home, Compass, Library, MessageSquare, HelpCircle, BarChart3, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -28,6 +28,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           <Link to="/library" className={cn("sidebar-item", { "justify-center": !isOpen })}>
             <Library className="h-5 w-5 min-w-5" />
             {isOpen && <span>Library</span>}
+          </Link>
+          <Link to="/settings" className={cn("sidebar-item", { "justify-center": !isOpen })}>
+            <Settings className="h-5 w-5 min-w-5" />
+            {isOpen && <span>Settings</span>}
           </Link>
         </div>
 
