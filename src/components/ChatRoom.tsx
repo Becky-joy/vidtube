@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Avatar } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Send, Users, Whatsapp, ExternalLink } from 'lucide-react';
+import { Send, Users, MessageCircle, ExternalLink, HelpCircle, Mail, Phone } from 'lucide-react';
 import { getRandomAvatar } from '@/lib/api';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock data for online users
 const onlineUsers = [
@@ -45,11 +46,37 @@ const ChatRoom = () => {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<string>('chat');
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const { toast } = useToast();
 
   // Social media links
   const socialLinks = [
-    { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> },
-    { name: 'Telegram', url: 'https://t.me/yourusername', icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> },
+    { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: <MessageCircle className="h-4 w-4" /> },
+    { name: 'Telegram', url: 'https://t.me/yourusername', icon: <Send className="h-4 w-4" /> },
+  ];
+
+  // Support options
+  const supportOptions = [
+    { 
+      title: 'Email Support',
+      description: 'Get help via email within 24 hours',
+      icon: <Mail className="h-5 w-5" />,
+      contact: 'support@example.com'
+    },
+    { 
+      title: 'Phone Support',
+      description: 'Speak directly with our support team',
+      icon: <Phone className="h-5 w-5" />,
+      contact: '+1 (555) 123-4567'
+    },
+    { 
+      title: 'Live Chat',
+      description: 'Chat with our support agents in real-time',
+      icon: <MessageCircle className="h-5 w-5" />,
+      action: 'Start Chat'
+    }
   ];
 
   useEffect(() => {
@@ -87,6 +114,45 @@ const ChatRoom = () => {
     setInputValue('');
   };
 
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactName || !contactEmail || !contactMessage) {
+      toast({
+        title: "Error",
+        description: "Please fill out all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Simulate sending contact form
+    toast({
+      title: "Message Sent",
+      description: "Thank you for your message. We'll get back to you soon.",
+    });
+
+    // Clear form
+    setContactName('');
+    setContactEmail('');
+    setContactMessage('');
+  };
+  
+  const handleSupportAction = (action: string, contact?: string) => {
+    if (action === 'Start Chat') {
+      setActiveTab('chat');
+      toast({
+        title: "Live Chat",
+        description: "Starting a chat with our support team.",
+      });
+    } else if (contact) {
+      // For email or phone, we just show a toast with the contact info
+      toast({
+        title: "Contact Information",
+        description: contact,
+      });
+    }
+  };
+
   return (
     <div className="bg-vidtube-darkgray rounded-lg overflow-hidden">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -104,6 +170,14 @@ const ChatRoom = () => {
               <TabsTrigger value="users" className="h-8 px-3 data-[state=active]:bg-vidtube-blue data-[state=active]:text-white">
                 <Users className="h-4 w-4 mr-1" />
                 Users
+              </TabsTrigger>
+              <TabsTrigger value="support" className="h-8 px-3 data-[state=active]:bg-vidtube-blue data-[state=active]:text-white">
+                <HelpCircle className="h-4 w-4 mr-1" />
+                Support
+              </TabsTrigger>
+              <TabsTrigger value="contact" className="h-8 px-3 data-[state=active]:bg-vidtube-blue data-[state=active]:text-white">
+                <Mail className="h-4 w-4 mr-1" />
+                Contact
               </TabsTrigger>
             </TabsList>
           </div>
@@ -213,6 +287,97 @@ const ChatRoom = () => {
                 ))}
               </div>
             </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="support" className="m-0">
+          <div className="h-[400px] overflow-y-auto p-4">
+            <h3 className="text-sm font-medium mb-3 text-white">How can we help you?</h3>
+            <p className="text-sm text-vidtube-lightgray mb-4">Select one of the support options below:</p>
+            
+            <div className="space-y-3">
+              {supportOptions.map((option, index) => (
+                <div key={index} className="bg-vidtube-gray p-4 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-vidtube-blue rounded-lg text-white">
+                      {option.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium">{option.title}</h4>
+                      <p className="text-sm text-vidtube-lightgray mt-1">{option.description}</p>
+                      
+                      {option.contact && (
+                        <div className="mt-2 text-sm font-medium">{option.contact}</div>
+                      )}
+                      
+                      {option.action && (
+                        <Button
+                          onClick={() => handleSupportAction(option.action, option.contact)}
+                          className="mt-2" 
+                          size="sm"
+                        >
+                          {option.action}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-4 text-center text-vidtube-lightgray text-sm">
+              <p>Our support team is available Monday to Friday, 9AM-5PM EST</p>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="contact" className="m-0">
+          <div className="h-[400px] overflow-y-auto p-4">
+            <h3 className="text-sm font-medium mb-3 text-white">Contact Us</h3>
+            <p className="text-sm text-vidtube-lightgray mb-4">Fill out the form below and we'll get back to you as soon as possible.</p>
+            
+            <form onSubmit={handleContactSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm">Name</label>
+                <Input
+                  id="name"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                  placeholder="Your name"
+                  className="bg-vidtube-gray border-vidtube-gray"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm">Email</label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="Your email address"
+                  className="bg-vidtube-gray border-vidtube-gray"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm">Message</label>
+                <Textarea
+                  id="message"
+                  value={contactMessage}
+                  onChange={(e) => setContactMessage(e.target.value)}
+                  placeholder="How can we help you?"
+                  className="bg-vidtube-gray border-vidtube-gray min-h-[120px]"
+                  required
+                />
+              </div>
+              
+              <Button type="submit" className="w-full">
+                Send Message
+              </Button>
+            </form>
           </div>
         </TabsContent>
       </Tabs>
