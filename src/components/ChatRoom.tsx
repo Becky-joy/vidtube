@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Send, Users } from 'lucide-react';
+import { Send, Users, Whatsapp, ExternalLink } from 'lucide-react';
 import { getRandomAvatar } from '@/lib/api';
 
 // Mock data for online users
@@ -45,6 +45,12 @@ const ChatRoom = () => {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<string>('chat');
+
+  // Social media links
+  const socialLinks = [
+    { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> },
+    { name: 'Telegram', url: 'https://t.me/yourusername', icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> },
+  ];
 
   useEffect(() => {
     scrollToBottom();
@@ -185,6 +191,26 @@ const ChatRoom = () => {
                   <div className="font-medium text-sm">{currentUser.name}</div>
                   <div className="text-xs text-vidtube-lightgray">You</div>
                 </div>
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="mt-6">
+              <h3 className="text-sm font-medium mb-3 text-vidtube-lightgray">CONNECT WITH ME</h3>
+              <div className="space-y-2">
+                {socialLinks.map((link, index) => (
+                  <a 
+                    key={index} 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 p-2 hover:bg-vidtube-gray rounded-md text-sm group"
+                  >
+                    {link.icon}
+                    <span className="flex-1">{link.name}</span>
+                    <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
