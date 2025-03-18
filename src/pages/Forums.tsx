@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Share } from 'lucide-react';
 import { getRandomAvatar } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+import ChatRoom from '@/components/ChatRoom';
 
 // Mock forum data
 const forumTopics = [
@@ -225,7 +226,7 @@ const Forums = () => {
                 </ul>
               </div>
               
-              <div className="bg-vidtube-darkgray p-4 rounded-lg">
+              <div className="bg-vidtube-darkgray p-4 rounded-lg mb-4">
                 <h3 className="text-lg font-medium mb-2">Stats</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -246,6 +247,9 @@ const Forums = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Add ChatRoom component */}
+              <ChatRoom />
             </div>
             
             <div className="md:w-3/4">
