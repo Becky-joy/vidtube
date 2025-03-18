@@ -6,7 +6,7 @@ const programmingLanguages = [
 ];
 
 // Generate random avatars
-const getRandomAvatar = (seed: string) => `https://api.dicebear.com/7.x/initials/svg?seed=${seed}`;
+export const getRandomAvatar = (seed: string) => `https://api.dicebear.com/7.x/initials/svg?seed=${seed}`;
 
 // Random video thumbnails related to programming
 const codingThumbnails = [
