@@ -1,69 +1,89 @@
-# Welcome to your Lovable project
+
+# VidTube - Learning Platform
+
+VidTube is a modern video learning platform built with React, TypeScript, and Tailwind CSS.
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/eb3325cb-82f3-4bb7-aba7-bb7d484a96bf
 
-## How can I edit this code?
+## How to run this project locally (offline)
 
-There are several ways of editing your application.
+### Prerequisites
 
-**Use Lovable**
+Before running this project, make sure you have the following installed on your computer:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/eb3325cb-82f3-4bb7-aba7-bb7d484a96bf) and start prompting.
+1. **Node.js** (version 16 or higher) - [Download from nodejs.org](https://nodejs.org/en/download/)
+2. **npm** (comes bundled with Node.js)
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation Steps
 
-**Use your preferred IDE**
+1. **Clone the repository or download the ZIP file from GitHub**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   # OR download and extract the ZIP file from GitHub
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. **Navigate to the project directory**
+   ```sh
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+3. **Install the necessary dependencies**
+   ```sh
+   npm install
+   ```
+   This step might take a few minutes depending on your internet connection.
 
-Follow these steps:
+4. **Start the development server**
+   ```sh
+   npm run dev
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+5. **Open your browser** and go to the URL shown in the terminal (usually [http://localhost:8080](http://localhost:8080))
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Troubleshooting
 
-# Step 3: Install the necessary dependencies.
-npm i
+- If you see `command not found: npm`, it means Node.js is not properly installed or not in your PATH. Reinstall Node.js and make sure to include it in your PATH.
+- If you get errors during `npm install`, try running `npm cache clean --force` and then `npm install` again.
+- If the page doesn't load or appears blank, check your browser's console for errors (F12 or right-click > Inspect > Console).
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Building for Production
 
-**Edit a file directly in GitHub**
+To create a production build that you can deploy to any static hosting service:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Run the build command**
+   ```sh
+   npm run build
+   ```
 
-**Use GitHub Codespaces**
+2. **The build files will be in the `dist` folder**. You can deploy these files to any static hosting service.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Important Notes
 
-## What technologies are used for this project?
+- You **cannot** run this project by simply opening the index.html file in a browser or with Live Server. React applications need to be properly built and served.
+- Make sure all dependencies are installed before running the development server or building for production.
+- If you make any changes to the code, the development server will automatically reload with your changes.
 
-This project is built with .
+## Project Structure
+
+- `/src` - Contains the source code for the application
+  - `/components` - Reusable UI components
+  - `/pages` - Page components for different routes
+  - `/lib` - Utility functions and helpers
+  - `/hooks` - Custom React hooks
+- `/public` - Static assets like images and icons
+
+## Technologies Used
 
 - Vite
 - TypeScript
 - React
-- shadcn-ui
+- React Router
+- shadcn/ui
 - Tailwind CSS
+- Tanstack Query (React Query)
 
-## How can I deploy this project?
+## Need Help?
 
-Simply open [Lovable](https://lovable.dev/projects/eb3325cb-82f3-4bb7-aba7-bb7d484a96bf) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+If you're having trouble running the project or have any questions, feel free to reach out through the Lovable platform.
