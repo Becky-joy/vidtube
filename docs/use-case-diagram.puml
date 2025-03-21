@@ -1,0 +1,65 @@
+
+@startuml VidTube Learning Platform - Use Case Diagram
+
+' Define actors
+actor "Regular User" as User
+actor "Content Creator" as Creator
+actor "Administrator" as Admin
+
+' Regular User inherits from Creator and Admin
+Creator --|> User
+Admin --|> Creator
+
+rectangle "VidTube Learning Platform" {
+  ' User use cases
+  usecase "Browse Videos" as UC1
+  usecase "Search Content" as UC2
+  usecase "View Video Details" as UC3
+  usecase "Like/Dislike Videos" as UC4
+  usecase "Subscribe to Channels" as UC5
+  usecase "Comment on Videos" as UC6
+  usecase "Create Playlists" as UC7
+  usecase "Save to Watch Later" as UC8
+  usecase "View History" as UC9
+  usecase "Manage Profile" as UC10
+  usecase "Adjust Settings" as UC11
+  usecase "Explore Categories" as UC12
+  usecase "Access Forums" as UC13
+  
+  ' Content Creator use cases
+  usecase "Upload Videos" as UC14
+  usecase "Edit Video Details" as UC15
+  usecase "Delete Videos" as UC16
+  usecase "View Analytics" as UC17
+  
+  ' Administrator use cases
+  usecase "Manage Users" as UC18
+  usecase "Moderate Content" as UC19
+  usecase "Configure System" as UC20
+
+  ' Connect actors with use cases
+  User -- UC1
+  User -- UC2
+  User -- UC3
+  User -- UC4
+  User -- UC5
+  User -- UC6
+  User -- UC7
+  User -- UC8
+  User -- UC9
+  User -- UC10
+  User -- UC11
+  User -- UC12
+  User -- UC13
+  
+  Creator -- UC14
+  Creator -- UC15
+  Creator -- UC16
+  Creator -- UC17
+  
+  Admin -- UC18
+  Admin -- UC19
+  Admin -- UC20
+}
+
+@enduml
