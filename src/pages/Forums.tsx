@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ThumbsUp, ThumbsDown, MessageSquare, Flag, Share } from 'lucide-react';
 import { getRandomAvatar } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import ChatRoom from '@/components/ChatRoom';
+import LiveChatButton from '@/components/LiveChatButton';
 
 // Mock forum data
 const forumTopics = [
@@ -248,8 +247,7 @@ const Forums = () => {
                 </div>
               </div>
               
-              {/* Add ChatRoom component */}
-              <ChatRoom />
+              <LiveChatButton />
             </div>
             
             <div className="md:w-3/4">
@@ -312,7 +310,6 @@ const Forums = () => {
                     </div>
                   </div>
                   
-                  {/* Topic content */}
                   <div className="mb-6">
                     {forumTopics.filter(topic => topic.id === selectedTopic).map(topic => (
                       <Card key={topic.id} className="bg-vidtube-dark border-vidtube-gray mb-4">
@@ -344,10 +341,10 @@ const Forums = () => {
                         <CardFooter className="p-4 pt-0 flex justify-between">
                           <div className="flex gap-2">
                             <Button variant="ghost" size="sm">
-                              <ThumbsUp className="h-4 w-4 mr-1" /> Like
+                              <ThumbsUp className="h-4 w-4 mr-1" /> {reply.likes}
                             </Button>
                             <Button variant="ghost" size="sm">
-                              <ThumbsDown className="h-4 w-4 mr-1" /> Dislike
+                              <ThumbsDown className="h-4 w-4 mr-1" /> {reply.dislikes}
                             </Button>
                           </div>
                           <div className="text-sm text-vidtube-lightgray">
@@ -358,7 +355,6 @@ const Forums = () => {
                     ))}
                   </div>
                   
-                  {/* Replies */}
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold mb-4">Replies</h3>
                     <div className="space-y-4">
@@ -399,7 +395,6 @@ const Forums = () => {
                     </div>
                   </div>
                   
-                  {/* Reply form */}
                   <div>
                     <h3 className="text-lg font-semibold mb-4">Post a Reply</h3>
                     <form onSubmit={handleReplySubmit}>
