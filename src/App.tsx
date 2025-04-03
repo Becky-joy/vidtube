@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Forums from "./pages/Forums";
 import Quiz from "./pages/Quiz";
 import LiveChat from "./pages/LiveChat";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/forums" element={<Forums />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/live-chat" element={<LiveChat />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
