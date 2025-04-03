@@ -29,10 +29,6 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             <Library className="h-5 w-5 min-w-5" />
             {isOpen && <span>Library</span>}
           </Link>
-          <Link to="/quiz" className={cn("sidebar-item", { "justify-center": !isOpen })}>
-            <BookOpen className="h-5 w-5 min-w-5" />
-            {isOpen && <span>Quiz</span>}
-          </Link>
           <Link to="/settings" className={cn("sidebar-item", { "justify-center": !isOpen })}>
             <Settings className="h-5 w-5 min-w-5" />
             {isOpen && <span>Settings</span>}
@@ -46,6 +42,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <Link to="/forums" className="sidebar-item">
                 <MessageSquare className="h-5 w-5" />
                 <span>FORUMS</span>
+              </Link>
+              <Link to="/quiz" className="sidebar-item">
+                <BookOpen className="h-5 w-5" />
+                <span>Quiz</span>
               </Link>
               <Link to="/support" className="sidebar-item">
                 <HelpCircle className="h-5 w-5" />
