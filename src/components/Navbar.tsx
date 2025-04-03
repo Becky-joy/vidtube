@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Bell, Menu, Search, Upload, User } from 'lucide-react';
+import { Bell, Menu, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { type SpeechRecognition } from '@/lib/types';
@@ -79,9 +79,6 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
       </form>
 
       <div className="flex items-center gap-2">
-        <button className="p-2 rounded-full hover:bg-vidtube-hover hidden sm:flex">
-          <Upload className="h-5 w-5" />
-        </button>
         <button className="p-2 rounded-full hover:bg-vidtube-hover hidden sm:flex">
           <Bell className="h-5 w-5" />
         </button>
