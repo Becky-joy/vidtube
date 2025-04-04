@@ -1,13 +1,22 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Avatar } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Send, Users, MessageCircle, ExternalLink, HelpCircle, Mail, Phone } from 'lucide-react';
+import { Send, Users, MessageCircle, ExternalLink, HelpCircle, Mail, Phone, Check, Clock, Copy, Globe } from 'lucide-react';
 import { getRandomAvatar } from '@/lib/api';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 // Mock data for online users
 const onlineUsers = [
@@ -33,6 +42,30 @@ const currentUser = {
   avatar: getRandomAvatar('Guest' + Math.floor(Math.random() * 1000)),
 };
 
+// FAQ data
+const faqItems = [
+  {
+    question: "How do I reset my password?",
+    answer: "Go to the login page and click on 'Forgot Password'. Follow the instructions sent to your email to reset your password."
+  },
+  {
+    question: "Can I download videos for offline viewing?",
+    answer: "Yes, premium users can download videos for offline viewing on mobile devices. Look for the download button below each video while browsing with a premium account."
+  },
+  {
+    question: "How do I report inappropriate content?",
+    answer: "Click the 'Report' button below any video and fill out the form explaining the issue. Our moderation team will review your report within 24-48 hours."
+  },
+  {
+    question: "Can I change my username?",
+    answer: "You can change your username once every 30 days. Go to Settings > Account > Username to make this change."
+  },
+  {
+    question: "How do I cancel my subscription?",
+    answer: "To cancel your subscription, go to Settings > Billing > Subscription Management and click on 'Cancel Subscription'. You'll have access until the end of your billing period."
+  }
+];
+
 interface Message {
   id: number;
   user: string;
@@ -49,12 +82,17 @@ const ChatRoom = () => {
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactMessage, setContactMessage] = useState('');
+  const [contactSubject, setContactSubject] = useState('');
+  const [supportCategory, setSupportCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copiedContact, setCopiedContact] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Social media links
   const socialLinks = [
     { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: <MessageCircle className="h-4 w-4" /> },
     { name: 'Telegram', url: 'https://t.me/yourusername', icon: <Send className="h-4 w-4" /> },
+    { name: 'Twitter', url: 'https://twitter.com/yourusername', icon: <Globe className="h-4 w-4" /> },
   ];
 
   // Support options
@@ -63,20 +101,32 @@ const ChatRoom = () => {
       title: 'Email Support',
       description: 'Get help via email within 24 hours',
       icon: <Mail className="h-5 w-5" />,
-      contact: 'support@example.com'
+      contact: 'support@example.com',
+      hours: 'Responses within 24 hours'
     },
     { 
       title: 'Phone Support',
       description: 'Speak directly with our support team',
       icon: <Phone className="h-5 w-5" />,
-      contact: '+1 (555) 123-4567'
+      contact: '+1 (555) 123-4567',
+      hours: 'Monday-Friday, 9AM-5PM EST'
     },
     { 
       title: 'Live Chat',
       description: 'Chat with our support agents in real-time',
       icon: <MessageCircle className="h-5 w-5" />,
-      action: 'Start Chat'
+      action: 'Start Chat',
+      hours: 'Available 24/7'
     }
+  ];
+
+  // Support categories
+  const categories = [
+    { id: 'technical', name: 'Technical Issues' },
+    { id: 'account', name: 'Account & Billing' },
+    { id: 'content', name: 'Content Issues' },
+    { id: 'feedback', name: 'Feedback & Suggestions' },
+    { id: 'other', name: 'Other' }
   ];
 
   useEffect(() => {
@@ -116,7 +166,7 @@ const ChatRoom = () => {
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactName || !contactEmail || !contactMessage) {
+    if (!contactName || !contactEmail || !contactMessage || !contactSubject) {
       toast({
         title: "Error",
         description: "Please fill out all fields",
@@ -135,6 +185,8 @@ const ChatRoom = () => {
     setContactName('');
     setContactEmail('');
     setContactMessage('');
+    setContactSubject('');
+    setSupportCategory('');
   };
   
   const handleSupportAction = (action: string, contact?: string) => {
@@ -152,6 +204,27 @@ const ChatRoom = () => {
       });
     }
   };
+
+  const handleCopyContact = (contact: string) => {
+    navigator.clipboard.writeText(contact);
+    setCopiedContact(contact);
+    
+    toast({
+      title: "Copied to clipboard",
+      description: "Contact information copied to clipboard",
+    });
+    
+    setTimeout(() => {
+      setCopiedContact(null);
+    }, 3000);
+  };
+
+  const filteredFaq = searchQuery.trim() === '' 
+    ? faqItems 
+    : faqItems.filter(item => 
+        item.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
   return (
     <div className="bg-vidtube-darkgray rounded-lg overflow-hidden">
@@ -295,9 +368,42 @@ const ChatRoom = () => {
             <h3 className="text-sm font-medium mb-3 text-white">How can we help you?</h3>
             <p className="text-sm text-vidtube-lightgray mb-4">Select one of the support options below:</p>
             
+            <div className="mb-4">
+              <Input
+                placeholder="Search our help center..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-vidtube-gray border-vidtube-gray"
+              />
+            </div>
+            
+            {searchQuery.trim() !== '' && (
+              <div className="mb-4">
+                <h4 className="text-sm font-medium mb-2">Search Results</h4>
+                {filteredFaq.length > 0 ? (
+                  <Accordion type="single" collapsible className="mb-4">
+                    {filteredFaq.map((item, index) => (
+                      <AccordionItem key={index} value={`item-${index}`}>
+                        <AccordionTrigger className="hover:no-underline">
+                          <span className="text-sm">{item.question}</span>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <p className="text-sm text-vidtube-lightgray">{item.answer}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                ) : (
+                  <p className="text-sm text-vidtube-lightgray bg-vidtube-gray/20 p-3 rounded-md">
+                    No results found. Please try another search term or contact us directly.
+                  </p>
+                )}
+              </div>
+            )}
+            
             <div className="space-y-3">
               {supportOptions.map((option, index) => (
-                <div key={index} className="bg-vidtube-gray p-4 rounded-lg">
+                <div key={index} className="bg-vidtube-gray/30 p-4 rounded-lg hover:bg-vidtube-gray/40 transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-vidtube-blue rounded-lg text-white">
                       {option.icon}
@@ -306,8 +412,27 @@ const ChatRoom = () => {
                       <h4 className="font-medium">{option.title}</h4>
                       <p className="text-sm text-vidtube-lightgray mt-1">{option.description}</p>
                       
+                      <div className="flex items-center mt-2 text-xs text-vidtube-lightgray">
+                        <Clock className="h-3.5 w-3.5 mr-1" />
+                        <span>{option.hours}</span>
+                      </div>
+                      
                       {option.contact && (
-                        <div className="mt-2 text-sm font-medium">{option.contact}</div>
+                        <div className="mt-2 flex items-center gap-2">
+                          <span className="text-sm font-medium">{option.contact}</span>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-7 w-7 p-0"
+                            onClick={() => handleCopyContact(option.contact)}
+                          >
+                            {copiedContact === option.contact ? (
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                            ) : (
+                              <Copy className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
+                        </div>
                       )}
                       
                       {option.action && (
@@ -325,7 +450,23 @@ const ChatRoom = () => {
               ))}
             </div>
             
-            <div className="mt-4 text-center text-vidtube-lightgray text-sm">
+            <div className="mt-6">
+              <h4 className="text-sm font-medium mb-3">Frequently Asked Questions</h4>
+              <Accordion type="single" collapsible className="mb-4">
+                {faqItems.slice(0, 3).map((item, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="hover:no-underline">
+                      <span className="text-sm">{item.question}</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <p className="text-sm text-vidtube-lightgray">{item.answer}</p>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+            
+            <div className="mt-4 text-center text-vidtube-lightgray text-xs">
               <p>Our support team is available Monday to Friday, 9AM-5PM EST</p>
             </div>
           </div>
@@ -337,26 +478,56 @@ const ChatRoom = () => {
             <p className="text-sm text-vidtube-lightgray mb-4">Fill out the form below and we'll get back to you as soon as possible.</p>
             
             <form onSubmit={handleContactSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-sm">Name</label>
-                <Input
-                  id="name"
-                  value={contactName}
-                  onChange={(e) => setContactName(e.target.value)}
-                  placeholder="Your name"
-                  className="bg-vidtube-gray border-vidtube-gray"
-                  required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm">Name</label>
+                  <Input
+                    id="name"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    placeholder="Your name"
+                    className="bg-vidtube-gray border-vidtube-gray"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm">Email</label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="bg-vidtube-gray border-vidtube-gray"
+                    required
+                  />
+                </div>
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm">Email</label>
+                <label htmlFor="category" className="text-sm">Support Category</label>
+                <Select value={supportCategory} onValueChange={setSupportCategory}>
+                  <SelectTrigger className="bg-vidtube-gray border-vidtube-gray">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="subject" className="text-sm">Subject</label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={contactEmail}
-                  onChange={(e) => setContactEmail(e.target.value)}
-                  placeholder="Your email address"
+                  id="subject"
+                  value={contactSubject}
+                  onChange={(e) => setContactSubject(e.target.value)}
+                  placeholder="Briefly describe your issue"
                   className="bg-vidtube-gray border-vidtube-gray"
                   required
                 />
@@ -377,6 +548,10 @@ const ChatRoom = () => {
               <Button type="submit" className="w-full">
                 Send Message
               </Button>
+              
+              <div className="pt-4 text-center text-xs text-vidtube-lightgray border-t border-vidtube-gray/20">
+                <p>By submitting this form, you agree to our <a href="#" className="text-vidtube-blue hover:underline">Privacy Policy</a> and <a href="#" className="text-vidtube-blue hover:underline">Terms of Service</a>.</p>
+              </div>
             </form>
           </div>
         </TabsContent>
