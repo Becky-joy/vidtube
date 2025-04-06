@@ -1,5 +1,5 @@
 
-import { Home, Compass, Library, MessageSquare, HelpCircle, BarChart3, Settings, BookOpen } from 'lucide-react';
+import { Home, Compass, Library, MessageSquare, HelpCircle, BarChart3, Settings, BookOpen, Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -58,21 +58,26 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             </div>
 
             <div className="border-t border-vidtube-gray pt-4 mt-2">
-              <Link to="/facebook" className="sidebar-item">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="sidebar-item">
+                <Facebook className="h-5 w-5" />
                 <span>Facebook</span>
-              </Link>
-              <Link to="/instagram" className="sidebar-item">
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="sidebar-item">
+                <Instagram className="h-5 w-5" />
                 <span>Instagram</span>
-              </Link>
-              <Link to="/linkedin" className="sidebar-item">
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="sidebar-item">
+                <Linkedin className="h-5 w-5" />
                 <span>LinkedIn</span>
-              </Link>
-              <Link to="/twitter" className="sidebar-item">
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="sidebar-item">
+                <Twitter className="h-5 w-5" />
                 <span>Twitter</span>
-              </Link>
-              <Link to="/youtube" className="sidebar-item">
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="sidebar-item">
+                <Youtube className="h-5 w-5" />
                 <span>YouTube</span>
-              </Link>
+              </a>
             </div>
 
             <div className="px-6 py-4 text-xs text-vidtube-lightgray">
