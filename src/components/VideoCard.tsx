@@ -14,9 +14,10 @@ interface VideoCardProps {
     avatar: string;
   };
   index: number;
+  onClick?: (videoId: string) => void;
 }
 
-const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: VideoCardProps) => {
+const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index, onClick }: VideoCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Staggered animation delay based on index
@@ -24,6 +25,13 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: 
 
   const handleImageLoad = () => {
     setIsLoaded(true);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(id);
+    }
   };
 
   return (
@@ -35,6 +43,7 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index }: 
         "hover:transform hover:scale-[1.02] transition-transform duration-200"
       )}
       style={{ animationDelay }}
+      onClick={handleClick}
     >
       <div className="relative">
         <img 

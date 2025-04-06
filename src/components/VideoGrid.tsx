@@ -3,7 +3,11 @@ import { useState, useEffect } from 'react';
 import VideoCard from './VideoCard';
 import { getVideos } from '@/lib/api';
 
-const VideoGrid = () => {
+interface VideoGridProps {
+  onVideoSelect?: (videoId: string) => void;
+}
+
+const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +61,7 @@ const VideoGrid = () => {
           uploadTime={video.uploadTime}
           channel={video.channel}
           index={index}
+          onClick={onVideoSelect}
         />
       ))}
     </div>
