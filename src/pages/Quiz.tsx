@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import { Award, BookOpen, Check, Flag, Timer, ArrowLeft, X } from "lucide-react";
@@ -18,6 +17,7 @@ interface QuizCategory {
   timeInMinutes: number;
   difficulty: "beginner" | "intermediate" | "advanced";
   icon: React.ReactNode;
+  department: string;
 }
 
 interface QuizQuestion {
@@ -43,6 +43,7 @@ const Quiz = () => {
   const [quizStartTime, setQuizStartTime] = useState<Date | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const { toast } = useToast();
   
   const quizCategories: QuizCategory[] = [
@@ -53,7 +54,8 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 15,
       difficulty: "beginner",
-      icon: <BookOpen className="h-5 w-5" />
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Software Engineering"
     },
     {
       id: "html-css",
@@ -62,7 +64,8 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 20,
       difficulty: "beginner",
-      icon: <Flag className="h-5 w-5" />
+      icon: <Flag className="h-5 w-5" />,
+      department: "Software Engineering"
     },
     {
       id: "react",
@@ -71,7 +74,8 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 18,
       difficulty: "intermediate",
-      icon: <BookOpen className="h-5 w-5" />
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Software Engineering"
     },
     {
       id: "typescript",
@@ -80,7 +84,8 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 25,
       difficulty: "intermediate",
-      icon: <BookOpen className="h-5 w-5" />
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Software Engineering"
     },
     {
       id: "backend",
@@ -89,7 +94,8 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 30,
       difficulty: "advanced",
-      icon: <Flag className="h-5 w-5" />
+      icon: <Flag className="h-5 w-5" />,
+      department: "Software Engineering"
     },
     {
       id: "algorithms",
@@ -98,11 +104,111 @@ const Quiz = () => {
       questions: 5,
       timeInMinutes: 40,
       difficulty: "advanced",
-      icon: <Award className="h-5 w-5" />
+      icon: <Award className="h-5 w-5" />,
+      department: "Software Engineering"
+    },
+    {
+      id: "finance",
+      title: "Financial Analysis",
+      description: "Test your knowledge of financial statements, ratios, and business valuation techniques.",
+      questions: 5,
+      timeInMinutes: 20,
+      difficulty: "intermediate",
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Business"
+    },
+    {
+      id: "marketing",
+      title: "Marketing Strategies",
+      description: "Challenge yourself with questions about marketing channels, consumer behavior, and brand positioning.",
+      questions: 5,
+      timeInMinutes: 15,
+      difficulty: "beginner",
+      icon: <Flag className="h-5 w-5" />,
+      department: "Business"
+    },
+    {
+      id: "leadership",
+      title: "Leadership Skills",
+      description: "Evaluate your understanding of team management, conflict resolution, and organizational behavior.",
+      questions: 5,
+      timeInMinutes: 25,
+      difficulty: "advanced",
+      icon: <Award className="h-5 w-5" />,
+      department: "Business"
+    },
+    {
+      id: "anatomy",
+      title: "Human Anatomy",
+      description: "Test your knowledge of human body systems, organs, and their functions.",
+      questions: 5,
+      timeInMinutes: 30,
+      difficulty: "intermediate",
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Medical"
+    },
+    {
+      id: "pharmacology",
+      title: "Basic Pharmacology",
+      description: "Challenge yourself with questions about drug classifications, mechanisms, and clinical applications.",
+      questions: 5,
+      timeInMinutes: 35,
+      difficulty: "advanced",
+      icon: <Flag className="h-5 w-5" />,
+      department: "Medical"
+    },
+    {
+      id: "patient-care",
+      title: "Patient Care Essentials",
+      description: "Test your understanding of basic patient assessment, vital signs, and care procedures.",
+      questions: 5,
+      timeInMinutes: 20,
+      difficulty: "beginner",
+      icon: <Award className="h-5 w-5" />,
+      department: "Medical"
+    },
+    {
+      id: "crop-science",
+      title: "Crop Production",
+      description: "Test your knowledge of crop varieties, growth cycles, and cultivation techniques.",
+      questions: 5,
+      timeInMinutes: 20,
+      difficulty: "intermediate",
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Agricultural"
+    },
+    {
+      id: "soil-management",
+      title: "Soil Sciences",
+      description: "Challenge yourself with questions about soil composition, fertility, and conservation practices.",
+      questions: 5,
+      timeInMinutes: 25,
+      difficulty: "intermediate",
+      icon: <Flag className="h-5 w-5" />,
+      department: "Agricultural"
+    },
+    {
+      id: "supply-chain",
+      title: "Supply Chain Management",
+      description: "Test your knowledge of supply chain processes, optimization techniques, and logistics planning.",
+      questions: 5,
+      timeInMinutes: 30,
+      difficulty: "advanced",
+      icon: <BookOpen className="h-5 w-5" />,
+      department: "Logistics & Transport"
+    },
+    {
+      id: "warehouse",
+      title: "Warehouse Operations",
+      description: "Challenge yourself with questions about inventory management, warehouse layout, and material handling.",
+      questions: 5,
+      timeInMinutes: 20,
+      difficulty: "beginner",
+      icon: <Flag className="h-5 w-5" />,
+      department: "Logistics & Transport"
     }
   ];
   
-  // Quiz questions for each category
   const quizQuestions: Record<string, QuizQuestion[]> = {
     "javascript": [
       {
@@ -325,8 +431,414 @@ const Quiz = () => {
         options: ["Array", "Linked List", "Heap", "Hash Table"],
         correctAnswer: 2
       }
+    ],
+    "finance": [
+      {
+        id: "fin1",
+        question: "Which financial statement shows the company's revenues and expenses?",
+        options: ["Balance Sheet", "Income Statement", "Cash Flow Statement", "Statement of Owner's Equity"],
+        correctAnswer: 1
+      },
+      {
+        id: "fin2",
+        question: "What is the formula for calculating Return on Investment (ROI)?",
+        options: [
+          "Revenue - Expenses", 
+          "(Net Profit / Cost of Investment) × 100", 
+          "Assets - Liabilities", 
+          "Gross Profit / Revenue × 100"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "fin3",
+        question: "Which ratio measures a company's ability to pay short-term obligations?",
+        options: ["Debt-to-Equity Ratio", "Price-to-Earnings Ratio", "Current Ratio", "Gross Profit Margin"],
+        correctAnswer: 2
+      },
+      {
+        id: "fin4",
+        question: "What does EBITDA stand for?",
+        options: [
+          "Earnings Before Interest, Taxes, Depreciation, and Amortization", 
+          "Equity Before Interest, Taxes, Dividends, and Assets", 
+          "Earnings Based In Total Deductable Assets", 
+          "Expected Business Income Through Direct Assets"
+        ],
+        correctAnswer: 0
+      },
+      {
+        id: "fin5",
+        question: "Which valuation method uses discounted expected future cash flows?",
+        options: ["Book Value Method", "Market Capitalization", "Discounted Cash Flow (DCF)", "Comparable Company Analysis"],
+        correctAnswer: 2
+      }
+    ],
+    "marketing": [
+      {
+        id: "mkt1",
+        question: "What are the 4 Ps of Marketing?",
+        options: [
+          "Product, Price, Place, Promotion", 
+          "People, Process, Product, Performance", 
+          "Plan, Prepare, Publish, Promote", 
+          "Performance, Profit, Potential, Position"
+        ],
+        correctAnswer: 0
+      },
+      {
+        id: "mkt2",
+        question: "Which marketing concept focuses on satisfying customer needs better than competitors?",
+        options: ["Production Concept", "Product Concept", "Selling Concept", "Marketing Concept"],
+        correctAnswer: 3
+      },
+      {
+        id: "mkt3",
+        question: "What is market segmentation?",
+        options: [
+          "Dividing the market into distinct groups with similar needs", 
+          "Analyzing competitors in the market", 
+          "Setting prices according to market demand", 
+          "Distributing products to different markets"
+        ],
+        correctAnswer: 0
+      },
+      {
+        id: "mkt4",
+        question: "Which digital marketing metric measures the percentage of visitors who take a desired action?",
+        options: ["Click-through Rate (CTR)", "Bounce Rate", "Conversion Rate", "Cost Per Click (CPC)"],
+        correctAnswer: 2
+      },
+      {
+        id: "mkt5",
+        question: "What is a USP in marketing?",
+        options: [
+          "Unified Sales Process", 
+          "Unique Selling Proposition", 
+          "Universal Standard Pricing", 
+          "Ultimate Strategic Plan"
+        ],
+        correctAnswer: 1
+      }
+    ],
+    "leadership": [
+      {
+        id: "lead1",
+        question: "Which leadership style involves making decisions with team input?",
+        options: ["Autocratic", "Laissez-faire", "Democratic", "Transactional"],
+        correctAnswer: 2
+      },
+      {
+        id: "lead2",
+        question: "What theory suggests that leaders are born, not made?",
+        options: ["Trait Theory", "Situational Theory", "Behavioral Theory", "Transformational Theory"],
+        correctAnswer: 0
+      },
+      {
+        id: "lead3",
+        question: "Which conflict resolution strategy aims to find a solution that fully satisfies all parties?",
+        options: ["Avoiding", "Competing", "Compromising", "Collaborating"],
+        correctAnswer: 3
+      },
+      {
+        id: "lead4",
+        question: "What does emotional intelligence in leadership primarily involve?",
+        options: [
+          "Technical expertise", 
+          "Understanding and managing emotions", 
+          "IQ and logical reasoning", 
+          "Formal authority and position power"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "lead5",
+        question: "Which leadership approach focuses on inspiring followers through vision and charisma?",
+        options: ["Bureaucratic Leadership", "Servant Leadership", "Transformational Leadership", "Transactional Leadership"],
+        correctAnswer: 2
+      }
+    ],
+    "anatomy": [
+      {
+        id: "anat1",
+        question: "Which organ is part of both the digestive and respiratory systems?",
+        options: ["Liver", "Lungs", "Pharynx", "Stomach"],
+        correctAnswer: 2
+      },
+      {
+        id: "anat2",
+        question: "What is the largest organ in the human body?",
+        options: ["Heart", "Liver", "Skin", "Brain"],
+        correctAnswer: 2
+      },
+      {
+        id: "anat3",
+        question: "Which chamber of the heart pumps oxygenated blood to the body?",
+        options: ["Right Atrium", "Right Ventricle", "Left Atrium", "Left Ventricle"],
+        correctAnswer: 3
+      },
+      {
+        id: "anat4",
+        question: "Which of the following is NOT part of the central nervous system?",
+        options: ["Brain", "Spinal Cord", "Peripheral Nerves", "Cerebrospinal Fluid"],
+        correctAnswer: 2
+      },
+      {
+        id: "anat5",
+        question: "Which gland regulates metabolism, growth, and development?",
+        options: ["Pituitary", "Adrenal", "Thyroid", "Pancreas"],
+        correctAnswer: 2
+      }
+    ],
+    "pharmacology": [
+      {
+        id: "pharm1",
+        question: "Which class of medications is primarily used to reduce fever and pain?",
+        options: ["Antibiotics", "Antihistamines", "Analgesics", "Antidepressants"],
+        correctAnswer: 2
+      },
+      {
+        id: "pharm2",
+        question: "What is the mechanism of action for beta-blocker medications?",
+        options: [
+          "Block calcium channels", 
+          "Block beta-adrenergic receptors", 
+          "Inhibit ACE enzyme", 
+          "Block histamine receptors"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "pharm3",
+        question: "Which route of administration provides the fastest systemic effect?",
+        options: ["Oral", "Topical", "Intravenous", "Intramuscular"],
+        correctAnswer: 2
+      },
+      {
+        id: "pharm4",
+        question: "What does the term 'half-life' refer to in pharmacology?",
+        options: [
+          "Time for drug to reach maximum concentration", 
+          "Time for drug to be absorbed", 
+          "Time for drug concentration to decrease by 50%", 
+          "Time for drug to be completely eliminated"
+        ],
+        correctAnswer: 2
+      },
+      {
+        id: "pharm5",
+        question: "Which of the following is a common side effect of opioid analgesics?",
+        options: ["Hypertension", "Respiratory depression", "Increased alertness", "Diarrhea"],
+        correctAnswer: 1
+      }
+    ],
+    "patient-care": [
+      {
+        id: "pc1",
+        question: "What is the normal resting heart rate for adults?",
+        options: ["40-60 bpm", "60-100 bpm", "100-120 bpm", "120-140 bpm"],
+        correctAnswer: 1
+      },
+      {
+        id: "pc2",
+        question: "Which position is typically used for patients with respiratory distress?",
+        options: ["Supine", "Prone", "Fowler's", "Trendelenburg"],
+        correctAnswer: 2
+      },
+      {
+        id: "pc3",
+        question: "What is the purpose of the Glasgow Coma Scale?",
+        options: [
+          "Assess pain levels", 
+          "Measure neurological status", 
+          "Evaluate respiratory function", 
+          "Screen for depression"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "pc4",
+        question: "Which vital sign is often called the 'fifth vital sign'?",
+        options: ["Blood Pressure", "Pain", "Oxygen Saturation", "Body Mass Index"],
+        correctAnswer: 1
+      },
+      {
+        id: "pc5",
+        question: "What does the abbreviation 'NPO' mean in patient care?",
+        options: ["Normal Procedure Ordered", "No Procedures Ordered", "Nothing By Mouth", "New Patient Orientation"],
+        correctAnswer: 2
+      }
+    ],
+    "crop-science": [
+      {
+        id: "crop1",
+        question: "Which of these is NOT a cereal crop?",
+        options: ["Wheat", "Barley", "Soybean", "Rice"],
+        correctAnswer: 2
+      },
+      {
+        id: "crop2",
+        question: "What is crop rotation primarily used for?",
+        options: [
+          "To increase soil fertility", 
+          "To reduce pests and diseases", 
+          "To maximize water usage", 
+          "Both A and B"
+        ],
+        correctAnswer: 3
+      },
+      {
+        id: "crop3",
+        question: "Which nutrient is primarily responsible for leaf growth in plants?",
+        options: ["Nitrogen", "Phosphorus", "Potassium", "Calcium"],
+        correctAnswer: 0
+      },
+      {
+        id: "crop4",
+        question: "What is the process by which plants make their own food called?",
+        options: ["Respiration", "Transpiration", "Photosynthesis", "Germination"],
+        correctAnswer: 2
+      },
+      {
+        id: "crop5",
+        question: "Which farming method involves growing plants in nutrient solutions rather than soil?",
+        options: ["Organic farming", "Hydroponics", "Permaculture", "Crop rotation"],
+        correctAnswer: 1
+      }
+    ],
+    "soil-management": [
+      {
+        id: "soil1",
+        question: "What is the ideal pH range for most crops?",
+        options: ["3.0-4.0", "5.5-7.0", "8.0-9.0", "10.0-12.0"],
+        correctAnswer: 1
+      },
+      {
+        id: "soil2",
+        question: "Which of the following is NOT a major component of soil?",
+        options: ["Minerals", "Organic matter", "Air", "Chlorophyll"],
+        correctAnswer: 3
+      },
+      {
+        id: "soil3",
+        question: "What is soil erosion?",
+        options: [
+          "Addition of nutrients to soil", 
+          "Removal of topsoil by wind or water", 
+          "Compaction of soil", 
+          "Conversion of soil to desert"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "soil4",
+        question: "Which practice helps prevent soil erosion?",
+        options: ["Deep tilling", "Contour farming", "Monocropping", "Removal of vegetation"],
+        correctAnswer: 1
+      },
+      {
+        id: "soil5",
+        question: "What does soil texture refer to?",
+        options: [
+          "The color of soil", 
+          "The temperature of soil", 
+          "The proportion of sand, silt, and clay", 
+          "The amount of organic matter"
+        ],
+        correctAnswer: 2
+      }
+    ],
+    "supply-chain": [
+      {
+        id: "sc1",
+        question: "What does JIT stand for in logistics?",
+        options: ["Job In Transit", "Just In Time", "Join Internal Transport", "Junction Inventory Tracking"],
+        correctAnswer: 1
+      },
+      {
+        id: "sc2",
+        question: "Which of the following is NOT a key component of supply chain management?",
+        options: ["Planning", "Sourcing", "Marketing", "Delivery"],
+        correctAnswer: 2
+      },
+      {
+        id: "sc3",
+        question: "What is the bullwhip effect in supply chain management?",
+        options: [
+          "A rapid delivery system", 
+          "Increasing swings in inventory in response to demand changes", 
+          "A method of inventory control", 
+          "A transport scheduling technique"
+        ],
+        correctAnswer: 1
+      },
+      {
+        id: "sc4",
+        question: "What does FIFO stand for in inventory management?",
+        options: ["Fast In, Fast Out", "First In, First Out", "Final Inventory For Output", "Fixed Input, Flexible Output"],
+        correctAnswer: 1
+      },
+      {
+        id: "sc5",
+        question: "Which of the following is a benefit of cross-docking?",
+        options: [
+          "Increased inventory storage", 
+          "Reduced handling and storage time", 
+          "Simplified supplier relationships", 
+          "Decreased transportation needs"
+        ],
+        correctAnswer: 1
+      }
+    ],
+    "warehouse": [
+      {
+        id: "wh1",
+        question: "What is an SKU in warehouse management?",
+        options: ["Stored Kinetic Unit", "Stock Keeping Unit", "Supply Knowledge Update", "Standard Kit Utility"],
+        correctAnswer: 1
+      },
+      {
+        id: "wh2",
+        question: "Which warehouse layout typically allows for the most efficient use of space?",
+        options: ["U-shaped flow", "Straight-line flow", "L-shaped flow", "Random flow"],
+        correctAnswer: 0
+      },
+      {
+        id: "wh3",
+        question: "What is the purpose of a WMS in logistics?",
+        options: [
+          "Worker Management System for staff scheduling", 
+          "Warehouse Maintenance System for equipment upkeep", 
+          "Warehouse Management System for inventory control", 
+          "Waste Minimization Strategy for reducing waste"
+        ],
+        correctAnswer: 2
+      },
+      {
+        id: "wh4",
+        question: "Which picking method involves retrieving items for multiple orders in a single trip?",
+        options: ["Piece picking", "Zone picking", "Batch picking", "Wave picking"],
+        correctAnswer: 2
+      },
+      {
+        id: "wh5",
+        question: "What is the primary purpose of pallet racking in a warehouse?",
+        options: [
+          "To organize administrative documents", 
+          "To maximize vertical storage space", 
+          "To separate different shipping zones", 
+          "To provide workspace for employees"
+        ],
+        correctAnswer: 1
+      }
     ]
   };
+  
+  const departments = [...new Set(quizCategories.map(quiz => quiz.department))];
+  
+  const filteredQuizzes = selectedDepartment 
+    ? quizCategories.filter(quiz => quiz.department === selectedDepartment)
+    : quizCategories;
   
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -365,12 +877,10 @@ const Quiz = () => {
       return;
     }
     
-    // Save the answer
     const newUserAnswers = [...userAnswers];
     newUserAnswers[currentQuestionIndex] = selectedOption;
     setUserAnswers(newUserAnswers);
     
-    // Move to next question or complete the quiz
     if (currentQuestionIndex < quizCategories.find(q => q.id === selectedCategory)!.questions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedOption(null);
@@ -389,7 +899,6 @@ const Quiz = () => {
   const completeQuiz = (finalAnswers: number[]) => {
     if (!selectedCategory || !quizStartTime) return;
     
-    // Calculate score
     const questions = quizQuestions[selectedCategory];
     let correctCount = 0;
     
@@ -399,11 +908,9 @@ const Quiz = () => {
       }
     });
     
-    // Calculate time taken
     const endTime = new Date();
     const timeTaken = Math.floor((endTime.getTime() - quizStartTime.getTime()) / 1000);
     
-    // Save result
     const result: QuizResult = {
       categoryId: selectedCategory,
       score: correctCount,
@@ -431,7 +938,6 @@ const Quiz = () => {
     setQuizCompleted(false);
   };
   
-  // Render quiz questions and answers
   const renderQuizContent = () => {
     if (!selectedCategory) return null;
     
@@ -624,8 +1130,30 @@ const Quiz = () => {
               </Badge>
             </div>
             
+            <div className="mb-6 overflow-x-auto">
+              <div className="flex space-x-2 pb-2 min-w-max">
+                <Button 
+                  variant={selectedDepartment === null ? "default" : "outline"}
+                  className="rounded-full"
+                  onClick={() => setSelectedDepartment(null)}
+                >
+                  All Departments
+                </Button>
+                {departments.map((department) => (
+                  <Button 
+                    key={department} 
+                    variant={selectedDepartment === department ? "default" : "outline"}
+                    className="rounded-full"
+                    onClick={() => setSelectedDepartment(department)}
+                  >
+                    {department}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {quizCategories.map((quiz) => (
+              {filteredQuizzes.map((quiz) => (
                 <Card key={quiz.id} className="hover:shadow-lg transition-shadow border-t-4 border-t-vidtube-blue">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
@@ -640,15 +1168,20 @@ const Quiz = () => {
                     <CardDescription>{quiz.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-2">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center">
-                        <Award className="h-4 w-4 mr-1" />
-                        <span>{quiz.questions} questions</span>
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center">
+                          <Award className="h-4 w-4 mr-1" />
+                          <span>{quiz.questions} questions</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Timer className="h-4 w-4 mr-1" />
+                          <span>{quiz.timeInMinutes} minutes</span>
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        <Timer className="h-4 w-4 mr-1" />
-                        <span>{quiz.timeInMinutes} minutes</span>
-                      </div>
+                      <Badge variant="outline" className="w-fit">
+                        {quiz.department}
+                      </Badge>
                     </div>
                   </CardContent>
                   <CardFooter>
@@ -663,7 +1196,6 @@ const Quiz = () => {
               ))}
             </div>
             
-            {/* Recent achievements section */}
             <div className="mt-12">
               <h2 className="text-2xl font-bold mb-6">Your Quiz Journey</h2>
               <div className="bg-card p-6 rounded-lg border">
@@ -678,6 +1210,7 @@ const Quiz = () => {
                             <p className="text-sm text-muted-foreground">
                               {new Date(result.date).toLocaleDateString()} • {formatTime(result.timeTaken)}
                             </p>
+                            <Badge variant="outline" className="mt-1">{category?.department}</Badge>
                           </div>
                           <div className="flex items-center">
                             <Badge className={cn(
