@@ -5,6 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import Library from "./pages/Library";
@@ -23,27 +26,78 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/video/:id" element={<VideoDetails />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/forums" element={<Forums />} />
-            <Route path="/quiz" element={<Quiz />} />
-            <Route path="/live-chat" element={<LiveChat />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/support" element={<Support />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public route */}
+              <Route path="/auth" element={<Auth />} />
+              
+              {/* Protected routes */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/explore" element={
+                <ProtectedRoute>
+                  <Explore />
+                </ProtectedRoute>
+              } />
+              <Route path="/library" element={
+                <ProtectedRoute>
+                  <Library />
+                </ProtectedRoute>
+              } />
+              <Route path="/video/:id" element={
+                <ProtectedRoute>
+                  <VideoDetails />
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
+              <Route path="/forums" element={
+                <ProtectedRoute>
+                  <Forums />
+                </ProtectedRoute>
+              } />
+              <Route path="/quiz" element={
+                <ProtectedRoute>
+                  <Quiz />
+                </ProtectedRoute>
+              } />
+              <Route path="/live-chat" element={
+                <ProtectedRoute>
+                  <LiveChat />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/support" element={
+                <ProtectedRoute>
+                  <Support />
+                </ProtectedRoute>
+              } />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

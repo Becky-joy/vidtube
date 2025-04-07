@@ -1,9 +1,19 @@
 
 import { useState } from 'react';
-import { Bell, Menu, Search, User } from 'lucide-react';
+import { Bell, LogOut, Menu, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { type SpeechRecognition } from '@/lib/types';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator,
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -12,6 +22,7 @@ interface NavbarProps {
 
 const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const { user, logout } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,9 +93,42 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
         <button className="p-2 rounded-full hover:bg-vidtube-hover hidden sm:flex">
           <Bell className="h-5 w-5" />
         </button>
-        <Link to="/profile" className="p-2 rounded-full hover:bg-vidtube-hover">
-          <User className="h-5 w-5" />
-        </Link>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="p-2 rounded-full relative" aria-label="User menu">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback>
+                  {user?.username?.charAt(0).toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <div className="px-4 py-2">
+              <p className="text-sm font-medium">{user?.username}</p>
+              <p className="text-xs text-muted-foreground">{user?.email}</p>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/profile" className="w-full cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/settings" className="w-full cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logout} className="cursor-pointer">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
