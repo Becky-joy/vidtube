@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import VideoCard from './VideoCard';
 import { getVideos } from '@/lib/api';
+import { Button } from '@/components/ui/button';
 
 interface VideoGridProps {
   onVideoSelect?: (videoId: string) => void;
@@ -10,6 +11,7 @@ interface VideoGridProps {
 const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -26,6 +28,14 @@ const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
 
     fetchVideos();
   }, []);
+
+  // Extract unique departments from videos
+  const departments = [...new Set(videos.map(video => video.department))].filter(Boolean);
+
+  // Filter videos by selected department
+  const filteredVideos = selectedDepartment 
+    ? videos.filter(video => video.department === selectedDepartment)
+    : videos;
 
   if (loading) {
     return (
@@ -50,20 +60,50 @@ const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-      {videos.map((video, index) => (
-        <VideoCard 
-          key={video.id}
-          id={video.id}
-          thumbnail={video.thumbnail}
-          title={video.title}
-          views={video.views}
-          uploadTime={video.uploadTime}
-          channel={video.channel}
-          index={index}
-          onClick={onVideoSelect}
-        />
-      ))}
+    <div>
+      {/* Department filter buttons */}
+      {departments.length > 0 && (
+        <div className="mb-6 overflow-x-auto">
+          <div className="flex space-x-2 pb-2 min-w-max">
+            <Button 
+              variant={selectedDepartment === null ? "default" : "outline"}
+              className="rounded-full"
+              onClick={() => setSelectedDepartment(null)}
+            >
+              All Departments
+            </Button>
+            {departments.map((department) => (
+              <Button 
+                key={department} 
+                variant={selectedDepartment === department ? "default" : "outline"}
+                className="rounded-full"
+                onClick={() => setSelectedDepartment(department as string)}
+              >
+                {department}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Videos grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {filteredVideos.map((video, index) => (
+          <VideoCard 
+            key={video.id}
+            id={video.id}
+            thumbnail={video.thumbnail}
+            title={video.title}
+            views={video.views}
+            uploadTime={video.uploadTime}
+            department={video.department}
+            topic={video.topic}
+            channel={video.channel}
+            index={index}
+            onClick={onVideoSelect}
+          />
+        ))}
+      </div>
     </div>
   );
 };

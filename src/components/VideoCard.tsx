@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 interface VideoCardProps {
   id: string;
@@ -9,6 +10,8 @@ interface VideoCardProps {
   title: string;
   views: string;
   uploadTime: string;
+  department?: string;
+  topic?: string;
   channel: {
     name: string;
     avatar: string;
@@ -17,7 +20,18 @@ interface VideoCardProps {
   onClick?: (videoId: string) => void;
 }
 
-const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index, onClick }: VideoCardProps) => {
+const VideoCard = ({ 
+  id, 
+  thumbnail, 
+  title, 
+  views, 
+  uploadTime, 
+  department,
+  topic,
+  channel, 
+  index, 
+  onClick 
+}: VideoCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Staggered animation delay based on index
@@ -56,6 +70,13 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index, on
         <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
           15:36
         </div>
+        {department && (
+          <div className="absolute top-2 left-2">
+            <Badge variant="secondary" className="text-xs">
+              {department}
+            </Badge>
+          </div>
+        )}
       </div>
 
       <div className="p-3 flex">
@@ -72,6 +93,9 @@ const VideoCard = ({ id, thumbnail, title, views, uploadTime, channel, index, on
           <h3 className="font-medium text-sm line-clamp-2 mb-1">{title}</h3>
           <p className="text-vidtube-lightgray text-xs">{channel.name}</p>
           <p className="text-vidtube-lightgray text-xs">{views} • {uploadTime}</p>
+          {topic && (
+            <Badge variant="outline" className="text-xs mt-1">{topic}</Badge>
+          )}
         </div>
       </div>
     </Link>

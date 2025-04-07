@@ -11,6 +11,7 @@ interface Course {
   title: string;
   description: string;
   category: string;
+  department: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   lessons: number;
@@ -20,18 +21,33 @@ interface Course {
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
 
+  const departments = [
+    'Software Engineering', 
+    'Business', 
+    'Medical', 
+    'Agricultural', 
+    'Logistics & Transport'
+  ];
+  
   const categories = [
     'Web Development', 'Mobile Apps', 'Game Development', 'Data Science', 
-    'Machine Learning', 'DevOps', 'Blockchain', 'Cybersecurity'
+    'Machine Learning', 'DevOps', 'Blockchain', 'Cybersecurity',
+    'Accounting', 'Marketing', 'Finance', 'Management',
+    'Clinical Skills', 'Anatomy', 'Pharmacology', 'Patient Care',
+    'Crop Science', 'Livestock Management', 'Soil Science', 'Sustainable Farming',
+    'Supply Chain', 'Transportation', 'Inventory Management', 'Logistics Planning'
   ];
   
   const courses: Course[] = [
+    // Software Engineering Department
     {
       id: 'web-dev-1',
       title: 'Modern JavaScript from Zero to Hero',
       description: 'Master JavaScript fundamentals, ES6+, async programming, and more!',
       category: 'Web Development',
+      department: 'Software Engineering',
       level: 'Beginner',
       duration: '24 hours',
       lessons: 42,
@@ -42,6 +58,7 @@ const Explore = () => {
       title: 'HTML & CSS: Complete Guide',
       description: 'Learn to build responsive, beautiful websites with HTML5 and CSS3.',
       category: 'Web Development',
+      department: 'Software Engineering',
       level: 'Beginner',
       duration: '18 hours',
       lessons: 36,
@@ -52,6 +69,7 @@ const Explore = () => {
       title: 'React: Build Modern Web Applications',
       description: 'Learn React from scratch, including hooks, context, and state management.',
       category: 'Web Development',
+      department: 'Software Engineering',
       level: 'Intermediate',
       duration: '30 hours',
       lessons: 48,
@@ -62,6 +80,7 @@ const Explore = () => {
       title: 'TypeScript Essential Training',
       description: 'Add static typing to your JavaScript projects with TypeScript.',
       category: 'Web Development',
+      department: 'Software Engineering',
       level: 'Intermediate',
       duration: '15 hours',
       lessons: 28,
@@ -72,6 +91,7 @@ const Explore = () => {
       title: 'iOS App Development with Swift',
       description: 'Learn to build native iOS apps using Swift and SwiftUI.',
       category: 'Mobile Apps',
+      department: 'Software Engineering',
       level: 'Intermediate',
       duration: '32 hours',
       lessons: 45,
@@ -82,149 +102,205 @@ const Explore = () => {
       title: 'Android Development with Kotlin',
       description: 'Build Android apps using modern Kotlin programming language.',
       category: 'Mobile Apps',
+      department: 'Software Engineering',
       level: 'Intermediate',
       duration: '28 hours',
       lessons: 40,
       image: 'https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?auto=format&fit=crop&q=80&w=300&h=200',
     },
+    
+    // Business Department
     {
-      id: 'mobile-3',
-      title: 'React Native for Beginners',
-      description: 'Build cross-platform mobile apps with React Native.',
-      category: 'Mobile Apps',
+      id: 'business-1',
+      title: 'Financial Accounting Fundamentals',
+      description: 'Master the basics of financial accounting and financial statements.',
+      category: 'Accounting',
+      department: 'Business',
       level: 'Beginner',
       duration: '20 hours',
       lessons: 32,
-      image: 'https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80&w=300&h=200',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'game-1',
-      title: 'Unity Game Development',
-      description: 'Create 2D and 3D games with the Unity game engine.',
-      category: 'Game Development',
-      level: 'Beginner',
-      duration: '36 hours',
-      lessons: 55,
-      image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=300&h=200',
-    },
-    {
-      id: 'game-2',
-      title: 'Unreal Engine: Beginner to Advanced',
-      description: 'Master Unreal Engine 5 for game development and 3D visualization.',
-      category: 'Game Development',
-      level: 'Advanced',
-      duration: '42 hours',
-      lessons: 60,
-      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=300&h=200',
-    },
-    {
-      id: 'data-1',
-      title: 'Data Science with Python',
-      description: 'Learn data analysis, visualization, and machine learning with Python.',
-      category: 'Data Science',
+      id: 'business-2',
+      title: 'Digital Marketing Strategy',
+      description: 'Learn to create comprehensive digital marketing campaigns across platforms.',
+      category: 'Marketing',
+      department: 'Business',
       level: 'Intermediate',
-      duration: '32 hours',
-      lessons: 48,
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=300&h=200',
+      duration: '25 hours',
+      lessons: 38,
+      image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'data-2',
-      title: 'SQL Database Design',
-      description: 'Master database design, normalization, and SQL queries.',
-      category: 'Data Science',
-      level: 'Beginner',
-      duration: '16 hours',
-      lessons: 30,
-      image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=300&h=200',
-    },
-    {
-      id: 'ml-1',
-      title: 'Machine Learning A-Z',
-      description: 'Comprehensive machine learning course covering supervised and unsupervised learning.',
-      category: 'Machine Learning',
+      id: 'business-3',
+      title: 'Investment Management',
+      description: 'Understand portfolio theory, asset allocation, and investment strategies.',
+      category: 'Finance',
+      department: 'Business',
       level: 'Advanced',
-      duration: '44 hours',
-      lessons: 65,
-      image: 'https://images.unsplash.com/photo-1527430253228-e93688616381?auto=format&fit=crop&q=80&w=300&h=200',
+      duration: '30 hours',
+      lessons: 45,
+      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'ml-2',
-      title: 'Deep Learning with TensorFlow',
-      description: 'Build neural networks and deep learning models with TensorFlow.',
-      category: 'Machine Learning',
-      level: 'Advanced',
-      duration: '36 hours',
-      lessons: 52,
-      image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&q=80&w=300&h=200',
+      id: 'business-4',
+      title: 'Leadership and Team Management',
+      description: 'Develop skills to effectively lead teams and manage organizational change.',
+      category: 'Management',
+      department: 'Business',
+      level: 'Intermediate',
+      duration: '22 hours',
+      lessons: 36,
+      image: 'https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=300&h=200',
     },
+    
+    // Medical Department
     {
-      id: 'devops-1',
-      title: 'Docker & Kubernetes: The Complete Guide',
-      description: 'Learn containerization and orchestration for modern applications.',
-      category: 'DevOps',
+      id: 'medical-1',
+      title: 'Clinical Assessment Skills',
+      description: 'Learn essential clinical assessment techniques and patient evaluation.',
+      category: 'Clinical Skills',
+      department: 'Medical',
       level: 'Intermediate',
       duration: '28 hours',
-      lessons: 45,
-      image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&q=80&w=300&h=200',
+      lessons: 42,
+      image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'devops-2',
-      title: 'CI/CD Pipeline Implementation',
-      description: 'Set up continuous integration and delivery pipelines for your projects.',
-      category: 'DevOps',
-      level: 'Advanced',
-      duration: '18 hours',
-      lessons: 32,
-      image: 'https://images.unsplash.com/photo-1620266757065-5814239881fd?auto=format&fit=crop&q=80&w=300&h=200',
-    },
-    {
-      id: 'blockchain-1',
-      title: 'Blockchain Development Fundamentals',
-      description: 'Learn the basics of blockchain technology and smart contract development.',
-      category: 'Blockchain',
+      id: 'medical-2',
+      title: 'Human Anatomy and Physiology',
+      description: 'Comprehensive guide to human body structures and functions.',
+      category: 'Anatomy',
+      department: 'Medical',
       level: 'Beginner',
-      duration: '22 hours',
-      lessons: 38,
-      image: 'https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&q=80&w=300&h=200',
+      duration: '35 hours',
+      lessons: 50,
+      image: 'https://images.unsplash.com/photo-1564732005956-20420ebdcfe4?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'blockchain-2',
-      title: 'Ethereum & Smart Contract Development',
-      description: 'Build decentralized applications on the Ethereum blockchain.',
-      category: 'Blockchain',
+      id: 'medical-3',
+      title: 'Principles of Pharmacology',
+      description: 'Understand drug actions, interactions, and therapeutic applications.',
+      category: 'Pharmacology',
+      department: 'Medical',
+      level: 'Advanced',
+      duration: '32 hours',
+      lessons: 48,
+      image: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    {
+      id: 'medical-4',
+      title: 'Patient Care and Communication',
+      description: 'Develop effective patient communication and care strategies.',
+      category: 'Patient Care',
+      department: 'Medical',
+      level: 'Intermediate',
+      duration: '18 hours',
+      lessons: 30,
+      image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    
+    // Agricultural Department
+    {
+      id: 'agri-1',
+      title: 'Modern Crop Production Techniques',
+      description: 'Learn advanced methods for sustainable and efficient crop production.',
+      category: 'Crop Science',
+      department: 'Agricultural',
       level: 'Intermediate',
       duration: '26 hours',
-      lessons: 42,
-      image: 'https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&q=80&w=300&h=200',
+      lessons: 40,
+      image: 'https://images.unsplash.com/photo-1592982537447-5f189eee1ce9?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'security-1',
-      title: 'Ethical Hacking: From Zero to Hero',
-      description: 'Learn cybersecurity fundamentals and ethical hacking techniques.',
-      category: 'Cybersecurity',
+      id: 'agri-2',
+      title: 'Livestock Health and Management',
+      description: 'Comprehensive guide to maintaining healthy livestock and preventing diseases.',
+      category: 'Livestock Management',
+      department: 'Agricultural',
       level: 'Intermediate',
-      duration: '30 hours',
-      lessons: 48,
-      image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=300&h=200',
+      duration: '24 hours',
+      lessons: 38,
+      image: 'https://images.unsplash.com/photo-1594756202469-9ff9799b2e4e?auto=format&fit=crop&q=80&w=300&h=200',
     },
     {
-      id: 'security-2',
-      title: 'Web Application Security',
-      description: 'Learn how to secure web applications against common vulnerabilities.',
-      category: 'Cybersecurity',
+      id: 'agri-3',
+      title: 'Soil Science and Management',
+      description: 'Understand soil properties, fertility management, and conservation.',
+      category: 'Soil Science',
+      department: 'Agricultural',
+      level: 'Beginner',
+      duration: '20 hours',
+      lessons: 32,
+      image: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    {
+      id: 'agri-4',
+      title: 'Sustainable Agriculture Practices',
+      description: 'Learn environmentally friendly farming methods for long-term sustainability.',
+      category: 'Sustainable Farming',
+      department: 'Agricultural',
+      level: 'Advanced',
+      duration: '22 hours',
+      lessons: 36,
+      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    
+    // Logistics & Transport Department
+    {
+      id: 'logistics-1',
+      title: 'Supply Chain Management Fundamentals',
+      description: 'Master the essentials of modern supply chain management and optimization.',
+      category: 'Supply Chain',
+      department: 'Logistics & Transport',
+      level: 'Beginner',
+      duration: '22 hours',
+      lessons: 35,
+      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    {
+      id: 'logistics-2',
+      title: 'Transportation Systems and Networks',
+      description: 'Understand the design and management of efficient transportation networks.',
+      category: 'Transportation',
+      department: 'Logistics & Transport',
+      level: 'Intermediate',
+      duration: '26 hours',
+      lessons: 40,
+      image: 'https://images.unsplash.com/photo-1577909659949-5abb1315e832?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    {
+      id: 'logistics-3',
+      title: 'Inventory and Warehouse Management',
+      description: 'Learn strategies for optimal inventory control and warehouse operations.',
+      category: 'Inventory Management',
+      department: 'Logistics & Transport',
+      level: 'Intermediate',
+      duration: '20 hours',
+      lessons: 32,
+      image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=300&h=200',
+    },
+    {
+      id: 'logistics-4',
+      title: 'Logistics Planning and Strategy',
+      description: 'Develop comprehensive logistics strategies for business operations.',
+      category: 'Logistics Planning',
+      department: 'Logistics & Transport',
       level: 'Advanced',
       duration: '24 hours',
-      lessons: 40,
-      image: 'https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&q=80&w=300&h=200',
+      lessons: 38,
+      image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=300&h=200',
     }
   ];
 
-  // Filter courses based on search and category
+  // Filter courses based on search, category and department
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           course.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory ? course.category === selectedCategory : true;
-    return matchesSearch && matchesCategory;
+    const matchesDepartment = selectedDepartment ? course.department === selectedDepartment : true;
+    return matchesSearch && matchesCategory && matchesDepartment;
   });
 
   const getLevelColor = (level: string) => {
@@ -246,7 +322,7 @@ const Explore = () => {
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold">Explore Learning Resources</h1>
-            <p className="text-muted-foreground mt-2">Discover new coding tutorials and learning resources.</p>
+            <p className="text-muted-foreground mt-2">Discover courses and tutorials from all departments.</p>
           </div>
           <div className="relative w-full md:w-72">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -259,8 +335,33 @@ const Explore = () => {
           </div>
         </div>
         
+        {/* Departments */}
+        <div className="mb-4 overflow-x-auto">
+          <h2 className="text-lg font-semibold mb-2">Departments</h2>
+          <div className="flex space-x-2 pb-2 min-w-max">
+            <Button 
+              variant={selectedDepartment === null ? "default" : "outline"}
+              className="rounded-full"
+              onClick={() => setSelectedDepartment(null)}
+            >
+              All Departments
+            </Button>
+            {departments.map((department) => (
+              <Button 
+                key={department} 
+                variant={selectedDepartment === department ? "default" : "outline"}
+                className="rounded-full"
+                onClick={() => setSelectedDepartment(department)}
+              >
+                {department}
+              </Button>
+            ))}
+          </div>
+        </div>
+        
         {/* Categories */}
         <div className="mb-8 overflow-x-auto">
+          <h2 className="text-lg font-semibold mb-2">Categories</h2>
           <div className="flex space-x-2 pb-2 min-w-max">
             <Button 
               variant={selectedCategory === null ? "default" : "outline"}
@@ -304,6 +405,9 @@ const Explore = () => {
                     <Badge variant="outline">{course.category}</Badge>
                     <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                   </div>
+                  <div className="mb-2">
+                    <Badge variant="secondary">{course.department}</Badge>
+                  </div>
                   <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
                   <p className="text-sm text-muted-foreground mb-3">{course.description}</p>
                   <div className="flex items-center justify-between text-sm">
@@ -339,20 +443,23 @@ const Explore = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="border rounded-lg p-4 hover:bg-accent/20 transition-colors">
               <Badge variant="outline" className="mb-2">Tutorial</Badge>
+              <Badge variant="secondary" className="mb-2 ml-2">Software Engineering</Badge>
               <h3 className="font-medium mb-1">Building a REST API with Node.js and Express</h3>
               <p className="text-sm text-muted-foreground mb-3">Learn how to build a scalable REST API using Node.js and Express.</p>
               <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
             </div>
             <div className="border rounded-lg p-4 hover:bg-accent/20 transition-colors">
               <Badge variant="outline" className="mb-2">Tutorial</Badge>
-              <h3 className="font-medium mb-1">Authentication with JWT in React Applications</h3>
-              <p className="text-sm text-muted-foreground mb-3">Implement secure authentication using JSON Web Tokens in React.</p>
+              <Badge variant="secondary" className="mb-2 ml-2">Business</Badge>
+              <h3 className="font-medium mb-1">Financial Statement Analysis for Beginners</h3>
+              <p className="text-sm text-muted-foreground mb-3">Learn how to analyze and interpret financial statements for business decisions.</p>
               <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
             </div>
             <div className="border rounded-lg p-4 hover:bg-accent/20 transition-colors">
               <Badge variant="outline" className="mb-2">Tutorial</Badge>
-              <h3 className="font-medium mb-1">Introduction to CSS Grid Layout</h3>
-              <p className="text-sm text-muted-foreground mb-3">Master CSS Grid for modern responsive web layouts.</p>
+              <Badge variant="secondary" className="mb-2 ml-2">Medical</Badge>
+              <h3 className="font-medium mb-1">Basic Vital Signs Assessment</h3>
+              <p className="text-sm text-muted-foreground mb-3">A step-by-step guide to accurately measuring and interpreting vital signs.</p>
               <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
             </div>
           </div>
