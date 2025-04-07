@@ -1,21 +1,33 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Layout from '@/components/Layout';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getRandomAvatar } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { Clock, Settings, Video, Heart } from 'lucide-react';
+import { Clock, Settings, Video, Heart, User, Upload, Image } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const Profile = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [editMode, setEditMode] = useState(false);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [profileData, setProfileData] = useState({
-    username: 'codelearner42',
-    fullName: 'Alex Johnson',
-    email: 'alex.johnson@example.com',
+    username: user?.username || 'codelearner42',
+    fullName: user?.username || 'Alex Johnson',
+    email: user?.email || 'alex.johnson@example.com',
     bio: 'Passionate developer learning new coding technologies. I love to create web applications and share my knowledge with others.',
     location: 'San Francisco, CA',
     website: 'https://alexjohnson.dev'
@@ -42,6 +54,25 @@ const Profile = () => {
     setEditMode(false);
   };
 
+  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfilePicture(reader.result as string);
+        toast({
+          title: "Profile picture updated",
+          description: "Your profile picture has been updated successfully!",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   // Mock data for the statistics and video lists
   const stats = {
     subscribers: 523,
@@ -63,9 +94,29 @@ const Profile = () => {
       <div className="animate-fade-in max-w-4xl mx-auto">
         <div className="bg-vidtube-darkgray rounded-lg p-6 mb-6">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <Avatar className="h-24 w-24 border-2 border-vidtube-blue">
-              <img src={getRandomAvatar(profileData.username)} alt={profileData.username} />
-            </Avatar>
+            <div className="relative group">
+              <Avatar className="h-24 w-24 border-2 border-vidtube-blue cursor-pointer">
+                {profilePicture ? (
+                  <img src={profilePicture} alt={profileData.username} className="h-full w-full object-cover" />
+                ) : (
+                  <img src={getRandomAvatar(profileData.username)} alt={profileData.username} />
+                )}
+              </Avatar>
+              
+              <div 
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity"
+                onClick={triggerFileInput}
+              >
+                <Upload className="h-8 w-8 text-white" />
+              </div>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={handleProfilePictureChange} 
+              />
+            </div>
             
             <div className="flex-1">
               {editMode ? (
@@ -227,6 +278,42 @@ const Profile = () => {
             </div>
           </TabsContent>
         </Tabs>
+        
+        {/* Profile Picture Upload Dialog */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="fixed bottom-4 right-4 flex items-center gap-2">
+              <Image className="h-4 w-4" />
+              Change Profile Picture
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Upload Profile Picture</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="flex justify-center">
+                <Avatar className="h-32 w-32 border-2 border-vidtube-blue">
+                  {profilePicture ? (
+                    <img src={profilePicture} alt={profileData.username} className="h-full w-full object-cover" />
+                  ) : (
+                    <img src={getRandomAvatar(profileData.username)} alt={profileData.username} />
+                  )}
+                </Avatar>
+              </div>
+              <div className="flex justify-center">
+                <Button 
+                  variant="outline" 
+                  onClick={triggerFileInput} 
+                  className="flex items-center gap-2"
+                >
+                  <Upload className="h-4 w-4" />
+                  Upload Image
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );
