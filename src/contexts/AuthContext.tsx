@@ -1,4 +1,3 @@
-
 import { createContext, useState, useEffect, ReactNode } from "react";
 
 type User = {
@@ -13,7 +12,7 @@ interface AuthContextType {
   isAdmin: boolean;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  adminLogin: (email: string, password: string) => Promise<void>;
+  adminLogin: (email: string, password: string, passcode: string) => Promise<void>;
   signup: (email: string, password: string, username: string) => Promise<void>;
   logout: () => void;
 }
@@ -31,6 +30,7 @@ export const AuthContext = createContext<AuthContextType>({
 // Admin credentials - in a real app, these would be stored securely in a database
 const ADMIN_EMAILS = ["admin@vidtube.com", "admin2@vidtube.com"];
 const ADMIN_PASSWORD = "admin123"; // In a real app, use proper password hashing
+const ADMIN_PASSCODE = "123454321";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -76,11 +76,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const adminLogin = async (email: string, password: string) => {
+  const adminLogin = async (email: string, password: string, passcode: string) => {
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
-        // Check if email is in the admin list and password matches
-        if (ADMIN_EMAILS.includes(email) && password === ADMIN_PASSWORD) {
+        // Check if email is in the admin list, password matches, and passcode is correct
+        if (ADMIN_EMAILS.includes(email) && password === ADMIN_PASSWORD && passcode === ADMIN_PASSCODE) {
           const adminUser = {
             id: `admin-${Date.now()}`,
             email,
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAdmin(true);
           resolve();
         } else {
-          reject(new Error("Invalid admin credentials"));
+          reject(new Error("Invalid admin credentials or passcode"));
         }
       }, 1000);
     });

@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  passcode: z.string().optional(),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -39,6 +40,7 @@ const LoginForm = ({ isAdmin = false }: LoginFormProps) => {
     defaultValues: {
       email: "",
       password: "",
+      passcode: "",
     },
   });
 
@@ -46,7 +48,12 @@ const LoginForm = ({ isAdmin = false }: LoginFormProps) => {
     setIsLoading(true);
     try {
       if (isAdmin) {
-        await adminLogin(data.email, data.password);
+        // Ensure passcode exists for admin login
+        if (!data.passcode) {
+          throw new Error("Admin passcode is required");
+        }
+        
+        await adminLogin(data.email, data.password, data.passcode);
         toast({
           title: "Admin login successful",
           description: "Welcome back, Administrator!",
@@ -63,7 +70,7 @@ const LoginForm = ({ isAdmin = false }: LoginFormProps) => {
     } catch (error) {
       toast({
         title: isAdmin ? "Admin login failed" : "Login failed",
-        description: "Incorrect email or password. Please try again.",
+        description: "Incorrect credentials. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -110,6 +117,28 @@ const LoginForm = ({ isAdmin = false }: LoginFormProps) => {
             </FormItem>
           )}
         />
+        
+        {isAdmin && (
+          <FormField
+            control={form.control}
+            name="passcode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Admin Passcode</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Enter admin passcode" 
+                    type="password" 
+                    {...field}
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? (isAdmin ? "Logging in as Admin..." : "Logging in...") : (isAdmin ? "Login as Admin" : "Login")}
         </Button>
