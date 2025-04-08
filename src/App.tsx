@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
@@ -20,6 +21,7 @@ import Quiz from "./pages/Quiz";
 import LiveChat from "./pages/LiveChat";
 import Dashboard from "./pages/Dashboard";
 import Support from "./pages/Support";
+import Users from "./pages/Users";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,13 @@ const App = () => (
             <Routes>
               {/* Public route */}
               <Route path="/auth" element={<Auth />} />
+              
+              {/* Admin routes */}
+              <Route path="/users" element={
+                <AdminRoute>
+                  <Users />
+                </AdminRoute>
+              } />
               
               {/* Protected routes */}
               <Route path="/" element={

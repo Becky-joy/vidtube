@@ -7,14 +7,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from "@/components/LoginForm";
 import SignupForm from "@/components/SignupForm";
 import { useAuth } from "@/hooks/useAuth";
+import { Tabs as AdminTabs, TabsContent as AdminTabsContent, TabsList as AdminTabsList, TabsTrigger as AdminTabsTrigger } from "@/components/ui/tabs";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
+  const [accountType, setAccountType] = useState<"user" | "admin">("user");
 
-  // If user is already authenticated, redirect to home page
+  // If user is already authenticated, redirect to appropriate page
   if (isAuthenticated) {
+    if (isAdmin) {
+      return <Navigate to="/users" replace />;
+    }
     return <Navigate to="/" replace />;
   }
 
@@ -31,22 +36,42 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs
-            defaultValue={activeTab}
-            onValueChange={(value) => setActiveTab(value as "login" | "signup")}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-            <TabsContent value="login">
-              <LoginForm />
-            </TabsContent>
-            <TabsContent value="signup">
-              <SignupForm />
-            </TabsContent>
-          </Tabs>
+          <div className="mb-6">
+            <AdminTabs
+              value={accountType}
+              onValueChange={(value) => setAccountType(value as "user" | "admin")}
+              className="w-full"
+            >
+              <AdminTabsList className="grid w-full grid-cols-2 mb-4">
+                <AdminTabsTrigger value="user">User Account</AdminTabsTrigger>
+                <AdminTabsTrigger value="admin">Admin Account</AdminTabsTrigger>
+              </AdminTabsList>
+            </AdminTabs>
+          </div>
+
+          {accountType === "user" ? (
+            <Tabs
+              defaultValue={activeTab}
+              onValueChange={(value) => setActiveTab(value as "login" | "signup")}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="login">Login</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
+              <TabsContent value="login">
+                <LoginForm isAdmin={false} />
+              </TabsContent>
+              <TabsContent value="signup">
+                <SignupForm />
+              </TabsContent>
+            </Tabs>
+          ) : (
+            <div>
+              <h3 className="text-lg font-medium mb-4 text-center">Admin Login</h3>
+              <LoginForm isAdmin={true} />
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">

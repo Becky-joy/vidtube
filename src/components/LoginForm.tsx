@@ -24,8 +24,12 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-const LoginForm = () => {
-  const { login } = useAuth();
+interface LoginFormProps {
+  isAdmin?: boolean;
+}
+
+const LoginForm = ({ isAdmin = false }: LoginFormProps) => {
+  const { login, adminLogin } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -41,15 +45,24 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
     try {
-      await login(data.email, data.password);
-      toast({
-        title: "Login successful",
-        description: "Welcome back to VidTube!",
-      });
-      navigate("/");
+      if (isAdmin) {
+        await adminLogin(data.email, data.password);
+        toast({
+          title: "Admin login successful",
+          description: "Welcome back, Administrator!",
+        });
+        navigate("/users");
+      } else {
+        await login(data.email, data.password);
+        toast({
+          title: "Login successful",
+          description: "Welcome back to VidTube!",
+        });
+        navigate("/");
+      }
     } catch (error) {
       toast({
-        title: "Login failed",
+        title: isAdmin ? "Admin login failed" : "Login failed",
         description: "Incorrect email or password. Please try again.",
         variant: "destructive",
       });
@@ -98,7 +111,7 @@ const LoginForm = () => {
           )}
         />
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Login"}
+          {isLoading ? (isAdmin ? "Logging in as Admin..." : "Logging in...") : (isAdmin ? "Login as Admin" : "Login")}
         </Button>
       </form>
     </Form>
