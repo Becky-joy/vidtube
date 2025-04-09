@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,12 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { useAuth } from '@/hooks/useAuth';
 import NotificationBell from '@/components/NotificationBell';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  toggleSidebar?: () => void;
+  sidebarOpen?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, sidebarOpen }) => {
   const { user, logout } = useAuth();
   
   return (
