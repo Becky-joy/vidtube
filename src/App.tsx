@@ -23,6 +23,10 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Support from "./pages/Support";
 import Users from "./pages/Users";
+import VideosManagement from "./pages/VideosManagement";
+import ForumModeration from "./pages/ForumModeration";
+import QuizManagement from "./pages/QuizManagement";
+import Analytics from "./pages/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +51,26 @@ const App = () => (
               <Route path="/users" element={
                 <AdminRoute>
                   <Users />
+                </AdminRoute>
+              } />
+              <Route path="/videos" element={
+                <AdminRoute>
+                  <VideosManagement />
+                </AdminRoute>
+              } />
+              <Route path="/forums/moderation" element={
+                <AdminRoute>
+                  <ForumModeration />
+                </AdminRoute>
+              } />
+              <Route path="/quiz/management" element={
+                <AdminRoute>
+                  <QuizManagement />
+                </AdminRoute>
+              } />
+              <Route path="/analytics" element={
+                <AdminRoute>
+                  <Analytics />
                 </AdminRoute>
               } />
               

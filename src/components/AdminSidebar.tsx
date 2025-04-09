@@ -25,8 +25,8 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
     { name: "Users", path: "/users", icon: <Users className="h-5 w-5" /> },
     { name: "Videos", path: "/videos", icon: <FileVideo className="h-5 w-5" /> },
-    { name: "Forum", path: "/forums", icon: <MessageSquare className="h-5 w-5" /> },
-    { name: "Quizzes", path: "/quiz", icon: <FileText className="h-5 w-5" /> },
+    { name: "Forum", path: "/forums/moderation", icon: <MessageSquare className="h-5 w-5" /> },
+    { name: "Quizzes", path: "/quiz/management", icon: <FileText className="h-5 w-5" /> },
     { name: "Analytics", path: "/analytics", icon: <BarChart className="h-5 w-5" /> },
     { name: "Support", path: "/support", icon: <HelpCircle className="h-5 w-5" /> },
     { name: "Settings", path: "/settings", icon: <Settings className="h-5 w-5" /> },
@@ -46,7 +46,7 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
       <div className="flex flex-col h-full">
         <div className="p-4">
           <Link 
-            to="/videos/new"
+            to="/videos"
             className={cn(
               "flex items-center w-full p-2 rounded-md bg-primary text-primary-foreground",
               !isOpen && "justify-center"
