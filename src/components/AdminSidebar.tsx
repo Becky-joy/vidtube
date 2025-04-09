@@ -10,7 +10,8 @@ import {
   BarChart, 
   HelpCircle, 
   Settings,
-  Plus
+  Plus,
+  Mail
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -28,7 +29,7 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
     { name: "Forum", path: "/forums/moderation", icon: <MessageSquare className="h-5 w-5" /> },
     { name: "Quizzes", path: "/quiz/management", icon: <FileText className="h-5 w-5" /> },
     { name: "Analytics", path: "/analytics", icon: <BarChart className="h-5 w-5" /> },
-    { name: "Support", path: "/support", icon: <HelpCircle className="h-5 w-5" /> },
+    { name: "Support", path: "/support", icon: <Mail className="h-5 w-5" /> },
     { name: "Settings", path: "/settings", icon: <Settings className="h-5 w-5" /> },
   ];
 
