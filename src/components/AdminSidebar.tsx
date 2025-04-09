@@ -8,11 +8,12 @@ import {
   MessageSquare, 
   FileText, 
   BarChart, 
-  HelpCircle, 
   Settings,
   Plus,
-  Mail
+  Mail,
+  Bell
 } from 'lucide-react';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 interface AdminSidebarProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ interface AdminSidebarProps {
 const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { unreadCount } = useNotifications();
 
   const menuItems = [
     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
@@ -29,7 +31,12 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
     { name: "Forum", path: "/forums/moderation", icon: <MessageSquare className="h-5 w-5" /> },
     { name: "Quizzes", path: "/quiz/management", icon: <FileText className="h-5 w-5" /> },
     { name: "Analytics", path: "/analytics", icon: <BarChart className="h-5 w-5" /> },
-    { name: "Support", path: "/support", icon: <Mail className="h-5 w-5" /> },
+    { 
+      name: "Support", 
+      path: "/support", 
+      icon: <Mail className="h-5 w-5" />,
+      badge: unreadCount > 0 ? unreadCount : undefined
+    },
     { name: "Settings", path: "/settings", icon: <Settings className="h-5 w-5" /> },
   ];
 
@@ -81,6 +88,11 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
                           >
                             {item.icon}
                             <span className="ml-3">{item.name}</span>
+                            {item.badge && (
+                              <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                                {item.badge > 9 ? "9+" : item.badge}
+                              </span>
+                            )}
                           </Link>
                         </li>
                       ))}
@@ -92,7 +104,7 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
             // Show only icons when sidebar is collapsed
             <ul className="flex flex-col items-center space-y-4 py-2">
               {menuItems.map((item) => (
-                <li key={item.name} className="w-full flex justify-center">
+                <li key={item.name} className="w-full flex justify-center relative">
                   <Link
                     to={item.path}
                     className={cn(
@@ -102,6 +114,11 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
                     title={item.name}
                   >
                     {item.icon}
+                    {item.badge && (
+                      <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                        {item.badge > 9 ? "9+" : item.badge}
+                      </span>
+                    )}
                   </Link>
                 </li>
               ))}

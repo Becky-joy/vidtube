@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Plus, Edit, Trash2, BarChart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart } from "@/components/charts/LineChart";
+import { useAdminNotifications } from "@/hooks/useAdminNotifications";
 
 // Mock quizzes data
 const mockQuizzes = [
@@ -43,6 +43,7 @@ const QuizManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentTab, setCurrentTab] = useState("all");
   const { toast } = useToast();
+  const { notifyQuizAdded, notifyQuizUpdated } = useAdminNotifications();
 
   // New quiz form state
   const [newQuiz, setNewQuiz] = useState({
@@ -94,6 +95,11 @@ const QuizManagement = () => {
       description: `"${newQuiz.title}" has been added to your quizzes.`,
     });
     
+    // Send notification
+    if (selectedVideo) {
+      notifyQuizAdded(newQuiz.title, selectedVideo.title);
+    }
+    
     setCurrentTab("all");
   };
 
@@ -131,6 +137,12 @@ const QuizManagement = () => {
       title: "Quiz updated",
       description: "The quiz details have been updated.",
     });
+    
+    // Send notification for quiz update
+    const updatedQuiz = quizzes.find(q => q.id === editingQuiz);
+    if (updatedQuiz) {
+      notifyQuizUpdated(editForm.title);
+    }
   };
 
   // Add question to new quiz

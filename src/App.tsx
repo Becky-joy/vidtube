@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { AuthProvider } from "./contexts/AuthContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import Auth from "./pages/Auth";
@@ -34,103 +35,105 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public route */}
-              <Route path="/auth" element={<Auth />} />
-              
-              {/* Admin routes */}
-              <Route path="/dashboard" element={
-                <AdminRoute>
-                  <AdminDashboard />
-                </AdminRoute>
-              } />
-              <Route path="/users" element={
-                <AdminRoute>
-                  <Users />
-                </AdminRoute>
-              } />
-              <Route path="/videos" element={
-                <AdminRoute>
-                  <VideosManagement />
-                </AdminRoute>
-              } />
-              <Route path="/forums/moderation" element={
-                <AdminRoute>
-                  <ForumModeration />
-                </AdminRoute>
-              } />
-              <Route path="/quiz/management" element={
-                <AdminRoute>
-                  <QuizManagement />
-                </AdminRoute>
-              } />
-              <Route path="/analytics" element={
-                <AdminRoute>
-                  <Analytics />
-                </AdminRoute>
-              } />
-              
-              {/* Protected routes */}
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              } />
-              <Route path="/explore" element={
-                <ProtectedRoute>
-                  <Explore />
-                </ProtectedRoute>
-              } />
-              <Route path="/library" element={
-                <ProtectedRoute>
-                  <Library />
-                </ProtectedRoute>
-              } />
-              <Route path="/video/:id" element={
-                <ProtectedRoute>
-                  <VideoDetails />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-              <Route path="/forums" element={
-                <ProtectedRoute>
-                  <Forums />
-                </ProtectedRoute>
-              } />
-              <Route path="/quiz" element={
-                <ProtectedRoute>
-                  <Quiz />
-                </ProtectedRoute>
-              } />
-              <Route path="/live-chat" element={
-                <ProtectedRoute>
-                  <LiveChat />
-                </ProtectedRoute>
-              } />
-              <Route path="/support" element={
-                <ProtectedRoute>
-                  <Support />
-                </ProtectedRoute>
-              } />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <NotificationProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                {/* Public route */}
+                <Route path="/auth" element={<Auth />} />
+                
+                {/* Admin routes */}
+                <Route path="/dashboard" element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                } />
+                <Route path="/users" element={
+                  <AdminRoute>
+                    <Users />
+                  </AdminRoute>
+                } />
+                <Route path="/videos" element={
+                  <AdminRoute>
+                    <VideosManagement />
+                  </AdminRoute>
+                } />
+                <Route path="/forums/moderation" element={
+                  <AdminRoute>
+                    <ForumModeration />
+                  </AdminRoute>
+                } />
+                <Route path="/quiz/management" element={
+                  <AdminRoute>
+                    <QuizManagement />
+                  </AdminRoute>
+                } />
+                <Route path="/analytics" element={
+                  <AdminRoute>
+                    <Analytics />
+                  </AdminRoute>
+                } />
+                <Route path="/support" element={
+                  <AdminRoute>
+                    <Support />
+                  </AdminRoute>
+                } />
+                
+                {/* Protected routes */}
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <Index />
+                  </ProtectedRoute>
+                } />
+                <Route path="/explore" element={
+                  <ProtectedRoute>
+                    <Explore />
+                  </ProtectedRoute>
+                } />
+                <Route path="/library" element={
+                  <ProtectedRoute>
+                    <Library />
+                  </ProtectedRoute>
+                } />
+                <Route path="/video/:id" element={
+                  <ProtectedRoute>
+                    <VideoDetails />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/forums" element={
+                  <ProtectedRoute>
+                    <Forums />
+                  </ProtectedRoute>
+                } />
+                <Route path="/quiz" element={
+                  <ProtectedRoute>
+                    <Quiz />
+                  </ProtectedRoute>
+                } />
+                <Route path="/live-chat" element={
+                  <ProtectedRoute>
+                    <LiveChat />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </NotificationProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
