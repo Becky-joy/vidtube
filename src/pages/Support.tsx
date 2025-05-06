@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -172,7 +171,7 @@ const Support = () => {
   return (
     <Layout>
       <div className="max-w-5xl mx-auto py-8 px-4 animate-fade-in">
-        <h1 className="text-3xl font-bold mb-6">Contact & Support</h1>
+        <h1 className="text-3xl font-bold mb-6">Help & Support Center</h1>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-6 grid grid-cols-3 w-full md:w-1/2">
