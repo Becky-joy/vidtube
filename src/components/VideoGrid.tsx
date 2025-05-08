@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button';
 
 interface VideoGridProps {
   onVideoSelect?: (videoId: string) => void;
+  limit?: number;
 }
 
-const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
+const VideoGrid = ({ onVideoSelect, limit }: VideoGridProps) => {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
@@ -37,10 +38,15 @@ const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
     ? videos.filter(video => video.department === selectedDepartment)
     : videos;
 
+  // Apply limit if provided
+  const displayedVideos = limit 
+    ? filteredVideos.slice(0, limit) 
+    : filteredVideos;
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 animate-pulse">
-        {[...Array(10)].map((_, index) => (
+        {[...Array(limit || 10)].map((_, index) => (
           <div key={index} className="video-card">
             <div className="video-thumbnail bg-vidtube-gray"></div>
             <div className="p-3 flex">
@@ -88,7 +94,7 @@ const VideoGrid = ({ onVideoSelect }: VideoGridProps) => {
 
       {/* Videos grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {filteredVideos.map((video, index) => (
+        {displayedVideos.map((video, index) => (
           <VideoCard 
             key={video.id}
             id={video.id}
