@@ -27,6 +27,7 @@ import VideosManagement from "./pages/VideosManagement";
 import ForumModeration from "./pages/ForumModeration";
 import QuizManagement from "./pages/QuizManagement";
 import Analytics from "./pages/Analytics";
+import CourseNotes from "./pages/CourseNotes";
 
 const queryClient = new QueryClient();
 
@@ -68,11 +69,16 @@ const App = () => (
                   <QuizManagement />
                 </AdminRoute>
               } />
-              <Route path="/analytics" element={
-                <AdminRoute>
-                  <Analytics />
-                </AdminRoute>
-              } />
+          <Route path="/analytics" element={
+            <AdminRoute>
+              <Analytics />
+            </AdminRoute>
+          } />
+          <Route path="/course/:courseId" element={
+            <ProtectedRoute>
+              <CourseNotes />
+            </ProtectedRoute>
+          } />
               
               {/* Protected routes */}
               <Route path="/" element={

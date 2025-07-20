@@ -58,8 +58,17 @@ const Explore = () => {
       title: "Starting Course",
       description: `Enrolling in "${course.title}"`,
     });
-    // Navigate to video details or learning page
-    navigate(`/video/${course.id}`);
+    // Navigate to course notes page
+    navigate(`/course/${course.id}`);
+  };
+
+  const handleReadTutorial = (tutorialTitle: string, courseId: string) => {
+    toast({
+      title: "Opening Tutorial",
+      description: `Loading "${tutorialTitle}"`,
+    });
+    // Navigate to course notes page
+    navigate(`/course/${courseId}`);
   };
 
   const handleDepartmentSelect = (department: string | null) => {
@@ -478,21 +487,39 @@ const Explore = () => {
               <Badge variant="secondary" className="mb-2 ml-2">Software Engineering</Badge>
               <h3 className="font-medium mb-1">Building a REST API with Node.js and Express</h3>
               <p className="text-sm text-muted-foreground mb-3">Learn how to build a scalable REST API using Node.js and Express.</p>
-              <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-vidtube-blue"
+                onClick={() => handleReadTutorial("Building a REST API with Node.js and Express", "se-1")}
+              >
+                Read Tutorial →
+              </Button>
             </div>
             <div className="border rounded-lg p-4 hover:bg-accent/20 transition-colors">
               <Badge variant="outline" className="mb-2">Tutorial</Badge>
               <Badge variant="secondary" className="mb-2 ml-2">Business</Badge>
               <h3 className="font-medium mb-1">Financial Statement Analysis for Beginners</h3>
               <p className="text-sm text-muted-foreground mb-3">Learn how to analyze and interpret financial statements for business decisions.</p>
-              <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-vidtube-blue"
+                onClick={() => handleReadTutorial("Financial Statement Analysis for Beginners", "business-1")}
+              >
+                Read Tutorial →
+              </Button>
             </div>
             <div className="border rounded-lg p-4 hover:bg-accent/20 transition-colors">
               <Badge variant="outline" className="mb-2">Tutorial</Badge>
               <Badge variant="secondary" className="mb-2 ml-2">Medical</Badge>
               <h3 className="font-medium mb-1">Basic Vital Signs Assessment</h3>
               <p className="text-sm text-muted-foreground mb-3">A step-by-step guide to accurately measuring and interpreting vital signs.</p>
-              <Button variant="link" className="p-0 h-auto text-vidtube-blue">Read Tutorial →</Button>
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-vidtube-blue"
+                onClick={() => handleReadTutorial("Basic Vital Signs Assessment", "medical-1")}
+              >
+                Read Tutorial →
+              </Button>
             </div>
           </div>
         </div>
