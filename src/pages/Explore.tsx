@@ -1,10 +1,12 @@
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Book, BookOpen, Play, Search, ArrowRight, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 
 interface Course {
   id: string;
@@ -22,6 +24,8 @@ const Explore = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const departments = [
     'Software Engineering', 
@@ -31,14 +35,38 @@ const Explore = () => {
     'Logistics & Transport'
   ];
   
-  const categories = [
-    'Web Development', 'Mobile Apps', 'Game Development', 'Data Science', 
-    'Machine Learning', 'DevOps', 'Blockchain', 'Cybersecurity',
-    'Accounting', 'Marketing', 'Finance', 'Management',
-    'Clinical Skills', 'Anatomy', 'Pharmacology', 'Patient Care',
-    'Crop Science', 'Livestock Management', 'Soil Science', 'Sustainable Farming',
-    'Supply Chain', 'Transportation', 'Inventory Management', 'Logistics Planning'
-  ];
+  const departmentCategories: { [key: string]: string[] } = {
+    'Software Engineering': ['Web Development', 'Mobile Apps', 'Game Development', 'Data Science', 'Machine Learning', 'DevOps', 'Blockchain', 'Cybersecurity'],
+    'Business': ['Accounting', 'Marketing', 'Finance', 'Management'],
+    'Medical': ['Clinical Skills', 'Anatomy', 'Pharmacology', 'Patient Care'],
+    'Agricultural': ['Crop Science', 'Livestock Management', 'Soil Science', 'Sustainable Farming'],
+    'Logistics & Transport': ['Supply Chain', 'Transportation', 'Inventory Management', 'Logistics Planning']
+  };
+  
+  const allCategories = Object.values(departmentCategories).flat();
+  
+  // Get categories based on selected department
+  const getAvailableCategories = () => {
+    if (selectedDepartment) {
+      return departmentCategories[selectedDepartment] || [];
+    }
+    return allCategories;
+  };
+
+  const handleStartLearning = (course: Course) => {
+    toast({
+      title: "Starting Course",
+      description: `Enrolling in "${course.title}"`,
+    });
+    // Navigate to video details or learning page
+    navigate(`/video/${course.id}`);
+  };
+
+  const handleDepartmentSelect = (department: string | null) => {
+    setSelectedDepartment(department);
+    // Reset category selection when department changes
+    setSelectedCategory(null);
+  };
   
   const courses: Course[] = [
     // Software Engineering Department
@@ -342,7 +370,7 @@ const Explore = () => {
             <Button 
               variant={selectedDepartment === null ? "default" : "outline"}
               className="rounded-full"
-              onClick={() => setSelectedDepartment(null)}
+              onClick={() => handleDepartmentSelect(null)}
             >
               All Departments
             </Button>
@@ -351,7 +379,7 @@ const Explore = () => {
                 key={department} 
                 variant={selectedDepartment === department ? "default" : "outline"}
                 className="rounded-full"
-                onClick={() => setSelectedDepartment(department)}
+                onClick={() => handleDepartmentSelect(department)}
               >
                 {department}
               </Button>
@@ -370,7 +398,7 @@ const Explore = () => {
             >
               All Categories
             </Button>
-            {categories.map((category) => (
+            {getAvailableCategories().map((category) => (
               <Button 
                 key={category} 
                 variant={selectedCategory === category ? "default" : "outline"}
@@ -422,7 +450,11 @@ const Explore = () => {
                   </div>
                 </div>
                 <div className="px-4 pb-4">
-                  <Button className="w-full" variant="outline">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={() => handleStartLearning(course)}
+                  >
                     Start Learning <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
