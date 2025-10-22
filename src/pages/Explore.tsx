@@ -1,12 +1,14 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import { Book, BookOpen, Play, Search, ArrowRight, Clock } from 'lucide-react';
+import { Book, BookOpen, Play, Search, ArrowRight, Clock, MapPin, Globe } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from '@/hooks/useLocation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Course {
   id: string;
@@ -18,14 +20,18 @@ interface Course {
   duration: string;
   lessons: number;
   image: string;
+  regions?: string[]; // Countries/regions where this course is popular
+  isGlobal?: boolean; // If true, course is relevant globally
 }
 
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [showLocalOnly, setShowLocalOnly] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { location, loading: locationLoading } = useLocation();
 
   const departments = [
     'Software Engineering', 
@@ -89,6 +95,7 @@ const Explore = () => {
       duration: '24 hours',
       lessons: 42,
       image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?auto=format&fit=crop&q=80&w=300&h=200',
+      isGlobal: true,
     },
     {
       id: 'web-dev-2',
@@ -100,6 +107,7 @@ const Explore = () => {
       duration: '18 hours',
       lessons: 36,
       image: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?auto=format&fit=crop&q=80&w=300&h=200',
+      isGlobal: true,
     },
     {
       id: 'web-dev-3',
@@ -111,6 +119,7 @@ const Explore = () => {
       duration: '30 hours',
       lessons: 48,
       image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=300&h=200',
+      regions: ['US', 'CA', 'GB', 'AU', 'IN'],
     },
     {
       id: 'web-dev-4',
@@ -157,6 +166,7 @@ const Explore = () => {
       duration: '20 hours',
       lessons: 32,
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=200',
+      isGlobal: true,
     },
     {
       id: 'business-2',
@@ -249,6 +259,7 @@ const Explore = () => {
       duration: '26 hours',
       lessons: 40,
       image: 'https://images.unsplash.com/photo-1592982537447-5f189eee1ce9?auto=format&fit=crop&q=80&w=300&h=200',
+      regions: ['KE', 'NG', 'IN', 'BR', 'ZA'],
     },
     {
       id: 'agri-2',
@@ -260,6 +271,7 @@ const Explore = () => {
       duration: '24 hours',
       lessons: 38,
       image: 'https://images.unsplash.com/photo-1594756202469-9ff9799b2e4e?auto=format&fit=crop&q=80&w=300&h=200',
+      regions: ['KE', 'UG', 'TZ', 'AU', 'NZ'],
     },
     {
       id: 'agri-3',
@@ -331,13 +343,32 @@ const Explore = () => {
     }
   ];
 
-  // Filter courses based on search, category and department
+  // Filter courses based on search, category, department, and location
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           course.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory ? course.category === selectedCategory : true;
     const matchesDepartment = selectedDepartment ? course.department === selectedDepartment : true;
-    return matchesSearch && matchesCategory && matchesDepartment;
+    
+    // Location-based filtering
+    const matchesLocation = !showLocalOnly || 
+                           course.isGlobal || 
+                           (location && course.regions?.includes(location.countryCode)) ||
+                           !course.regions;
+    
+    return matchesSearch && matchesCategory && matchesDepartment && matchesLocation;
+  });
+
+  // Sort courses to prioritize local content
+  const sortedCourses = [...filteredCourses].sort((a, b) => {
+    if (!location) return 0;
+    
+    const aIsLocal = a.regions?.includes(location.countryCode) || a.isGlobal;
+    const bIsLocal = b.regions?.includes(location.countryCode) || b.isGlobal;
+    
+    if (aIsLocal && !bIsLocal) return -1;
+    if (!aIsLocal && bIsLocal) return 1;
+    return 0;
   });
 
   const getLevelColor = (level: string) => {
@@ -360,6 +391,28 @@ const Explore = () => {
           <div>
             <h1 className="text-3xl font-bold">Explore Learning Resources</h1>
             <p className="text-muted-foreground mt-2">Discover courses and tutorials from all departments.</p>
+            
+            {/* Location indicator */}
+            {locationLoading ? (
+              <div className="flex items-center gap-2 mt-2">
+                <Skeleton className="h-4 w-4 rounded-full" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            ) : location ? (
+              <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4" />
+                <span>Learning from {location.city}, {location.country}</span>
+                <Button
+                  size="sm"
+                  variant={showLocalOnly ? "default" : "ghost"}
+                  onClick={() => setShowLocalOnly(!showLocalOnly)}
+                  className="ml-2 h-6 text-xs"
+                >
+                  <Globe className="h-3 w-3 mr-1" />
+                  {showLocalOnly ? 'Show All' : 'Local Only'}
+                </Button>
+              </div>
+            ) : null}
           </div>
           <div className="relative w-full md:w-72">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -421,9 +474,11 @@ const Explore = () => {
         </div>
         
         {/* Course Grid */}
-        {filteredCourses.length > 0 ? (
+        {sortedCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((course) => (
+            {sortedCourses.map((course) => {
+              const isLocalCourse = location && (course.regions?.includes(location.countryCode) || course.isGlobal);
+              return (
               <div key={course.id} className="bg-card rounded-lg overflow-hidden border hover:shadow-md transition-shadow">
                 <div className="aspect-video relative overflow-hidden">
                   <img 
@@ -442,8 +497,14 @@ const Explore = () => {
                     <Badge variant="outline">{course.category}</Badge>
                     <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                   </div>
-                  <div className="mb-2">
+                  <div className="flex gap-2 mb-2">
                     <Badge variant="secondary">{course.department}</Badge>
+                    {isLocalCourse && location && !course.isGlobal && (
+                      <Badge variant="default" className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3" />
+                        Popular in your region
+                      </Badge>
+                    )}
                   </div>
                   <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
                   <p className="text-sm text-muted-foreground mb-3">{course.description}</p>
@@ -468,7 +529,8 @@ const Explore = () => {
                   </Button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-16 border rounded-lg">
